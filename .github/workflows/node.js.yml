@@ -28,15 +28,4 @@ jobs:
       run: npm ci
 
     - name: Run unit tests
-      run: npm test
-
-    - name: Build Angular application
-      run: npm run build --if-present
-
-    - name: Deploy to GitHub Pages
-      run: |
-        if [ -z "${GITHUB_TOKEN}" ]; then
-          echo "Set the GITHUB_TOKEN secret in your repository for deployment."
-          exit 1
-        fi
-        npx ngh --dir=dist/iMedia-Frontend
+      run: ng test
