@@ -1,0 +1,15 @@
+[debug] [2024-01-27T20:02:58.537Z] ----------------------------------------------------------------------
+[debug] [2024-01-27T20:02:58.539Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\sosig\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2024-01-27T20:02:58.540Z] CLI Version:   13.1.0
+[debug] [2024-01-27T20:02:58.540Z] Platform:      win32
+[debug] [2024-01-27T20:02:58.540Z] Node Version:  v18.16.0
+[debug] [2024-01-27T20:02:58.541Z] Time:          Sat Jan 27 2024 22:02:58 GMT+0200 (Eastern European Standard Time)
+[debug] [2024-01-27T20:02:58.541Z] ----------------------------------------------------------------------
+[debug] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=482747293&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...

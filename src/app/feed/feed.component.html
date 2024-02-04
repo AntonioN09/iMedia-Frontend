@@ -1,0 +1,96 @@
+<div *ngIf="!((posts | async)?.length); else content" class="container mx-auto">
+    <div class="bg-white">
+        <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">It seems you haven't followed
+                    <br>
+                    any accounts
+                    yet.
+                </h2>
+                <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">By following other users, you’ll begin
+                    to see a stream of posts tailored to your interests, ideas, and aspirations.</p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="#"
+                        class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Go
+                        follow some accounts</a>
+                    <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Visit Ranking page <span
+                            aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #content>
+    <div *ngIf="posts" class="container mx-auto">
+
+        <div style="overflow-wrap: break-word" *ngFor="let post of posts | async">
+
+            <!-- Adjusted box styling here -->
+            <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
+                <div class="-mt-6 -mb-6">
+                    <div class="flex space-x-3">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" [src]="userData?.avatar" alt="">
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-semibold text-gray-900">
+                                <a href="#" class="hover:underline">{{ post.userEmail }}</a>
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                <!-- <a href="#" class="hover:underline">{{ post.formattedDate }} </a> -->
+                                <a href="#" class="hover:underline">{{ post.createDate.toDate().toLocaleDateString() }}
+                                    {{post.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                                    minute:'2-digit'})}}
+                                </a>
+                            </p>
+                            <!-- Actual paragraph content -->
+                            <!-- <p class="mt-2 text-gray-800">
+                                {{ post.body }}
+                            </p> -->
+                            <!-- End actual paragraph content -->
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mt-4 text-gray-800 font-sans font-normal">
+                            {{ post.body }}
+                        </p>
+                    </div>
+                    <!-- Interaction bar for likes and comments -->
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="flex items-center">
+                            <button (click)="toggleLike(post.id)" class="flex items-center mr-4">
+                                <!-- <svg class="w-6 h-6 hover:text-red-500" [ngClass]="{'text-red-500': 0, 'text-gray-500': 1}"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6 hover:text-red-500">
+                                    <path
+                                        d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                                </svg>
+
+                                <span class="text-gray-700 text-sm ml-1">{{ post.likes }}</span>
+                            </button>
+                            <!-- <button (click)="toggleLike(post.id)" class="flex items-center ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6">
+                                    <path fill-rule="evenodd"
+                                        d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+                                <span class="text-gray-700 text-sm ml-1">{{ 12 }}</span>
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</ng-template>
