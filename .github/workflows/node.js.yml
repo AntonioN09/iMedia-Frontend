@@ -1,0 +1,42 @@
+name: Angular Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run unit tests
+      run: npm test
+
+    - name: Build Angular application
+      run: npm run build --if-present
+
+    - name: Deploy to GitHub Pages
+      run: |
+        if [ -z "${GITHUB_TOKEN}" ]; then
+          echo "Set the GITHUB_TOKEN secret in your repository for deployment."
+          exit 1
+        fi
+        npx ngh --dir=dist/your-angular-app-name
