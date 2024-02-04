@@ -5,7 +5,6 @@ import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
 import { Post } from '../../models/post.model';
 import { switchMap } from 'rxjs/operators';
-import { getPost } from 'src/models/getPost.model';
 
 
 @Injectable({
@@ -21,16 +20,16 @@ export class PostService {
       .valueChanges({ idField: 'id' });
   }
 
-  getPostsByUserId(userId: string | null): Observable<getPost[]> {
+  getPostsByUserId(userId: string | null): Observable<Post[]> {
     return this.firestore
-      .collection<getPost>('posts', (ref) =>
+      .collection<Post>('posts', (ref) =>
         ref.where('userId', '==', userId).orderBy('createDate', 'desc')
       )
       .valueChanges({ idField: 'id' });
   }
 
-  getPostsSortedByLikes(): Observable<getPost[]> {
-    return this.firestore.collection<getPost>('posts', ref => ref.orderBy('likes', 'desc')).valueChanges({ idField: 'id' });
+  getPostsSortedByLikes(): Observable<Post[]> {
+    return this.firestore.collection<Post>('posts', ref => ref.orderBy('likes', 'desc')).valueChanges({ idField: 'id' });
   }
 
   getPostsByUserEmail(userEmail: string): Observable<any[]> {

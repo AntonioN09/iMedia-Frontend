@@ -5,7 +5,6 @@ export interface Post {
     likes?: number;
     userId?: string;
     userEmail?: string | null;
-    createDate?: Date;
-    formattedDate?: string;
+    createDate: Date;
     editing?: boolean;
 }

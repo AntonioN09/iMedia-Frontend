@@ -18,7 +18,9 @@ import { FollowComponent } from './follow/follow.component';
 import { RankComponent } from './rank/rank.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ModifyProfileComponent } from './modify-profile/modify-profile.component'; 
+import { ModifyProfileComponent } from './modify-profile/modify-profile.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component'; 
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { ModifyProfileComponent } from './modify-profile/modify-profile.componen
     FeedComponent,
     FollowComponent,
     RankComponent,
-    ModifyProfileComponent
+    ModifyProfileComponent,
+    AdminDashboardComponent,
+    ModDashboardComponent
     
   ],
   imports: [

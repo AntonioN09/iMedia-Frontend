@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { map, switchMap } from 'rxjs/operators';
 import { Follow } from '../../models/follow.model'
 import { User } from 'src/models/user.model';
 
@@ -11,7 +9,7 @@ import { User } from 'src/models/user.model';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private firestore: AngularFirestore, private auth: AngularFireAuth, private authService: AuthService) {}
+  constructor(private firestore: AngularFirestore) {}
 
   followUser(userEmail: string | null, emailToFollow: string): Promise<void> {
     return this.firestore
@@ -86,7 +84,7 @@ export class UserService {
 
     return user;
   }
-
+  
   updateUser(user: User): Observable<void> {
     return this.firestore.collection('users').doc(user.id).get().pipe(
       switchMap((doc) => {

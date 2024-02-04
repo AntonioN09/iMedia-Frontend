@@ -5,7 +5,6 @@ import { PostService } from '../../services/post/post.service';
 import { switchMap } from 'rxjs/operators';
 import { UserService } from '../../services/user/user.service';
 import { User } from 'src/models/user.model';
-import { getPost } from 'src/models/getPost.model';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +17,7 @@ export class ProfileComponent implements OnInit {
   username: string | null = null;
   userData: User | null = null;
   posts: Post[] = [];
-  @Input() getposts: getPost[] = [];
+  @Input() getposts: Post[] = [];
   constructor(private authService: AuthService, private postService: PostService, private userService: UserService) {}
 
   ngOnInit(): void {
@@ -38,8 +37,7 @@ export class ProfileComponent implements OnInit {
     ).subscribe((posts) => {
       this.getposts = posts;
       this.posts=this.getposts.map((getPost) => {
-        const createDate = getPost.createDate.toDate();
-        const formattedDate = `${createDate.getDate()}.${createDate.getMonth() + 1}.${createDate.getFullYear()} ${createDate.getHours()}:${('0' + createDate.getMinutes()).slice(-2)}`;
+        const createDate = getPost.createDate;
 
         return {
           id: getPost.id,
@@ -49,7 +47,6 @@ export class ProfileComponent implements OnInit {
           userId: getPost.userId,
           userEmail: getPost.userEmail,
           createDate: createDate,
-          formattedDate: formattedDate,
         };
       });
       this.userService.getUserById(this.userId).subscribe((userData) => {

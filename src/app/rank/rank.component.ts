@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post/post.service';
-import { getPost } from 'src/models/getPost.model';
 import { AuthService } from 'src/services/auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/models/user.model';
@@ -13,7 +12,7 @@ import { UserService } from 'src/services/user/user.service';
   styleUrls: ['./rank.component.css']
 })
 export class RankComponent implements OnInit {
-  @Input() getposts: getPost[] = [];
+  @Input() getposts: Post[] = [];
   posts: Post[] = [];
   currentUserEmail!: string | null;
   postForm!: FormGroup;
@@ -21,7 +20,10 @@ export class RankComponent implements OnInit {
 
   userData!: User | null;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private postService: PostService, private authService: AuthService) {
+  constructor(private fb: FormBuilder,
+              private userService: UserService, 
+              private postService: PostService, 
+              private authService: AuthService) {
     this.postForm = this.fb.group({
       
       body: ['', Validators.required],
@@ -36,8 +38,7 @@ export class RankComponent implements OnInit {
       this.getposts = posts;
       
       this.posts = this.getposts.map((getPost) => {
-        const createDate = getPost.createDate.toDate();
-        const formattedDate = `${createDate.getDate()}.${createDate.getMonth() + 1}.${createDate.getFullYear()} ${createDate.getHours()}:${('0' + createDate.getMinutes()).slice(-2)}`;
+        const createDate = getPost.createDate;
 
         return {
           id: getPost.id,
@@ -46,8 +47,7 @@ export class RankComponent implements OnInit {
           likes: getPost.likes,
           userId: getPost.userId,
           userEmail: getPost.userEmail,
-          createDate: createDate,
-          formattedDate: formattedDate,
+          createDate: createDate
         };
       });
     });
@@ -80,7 +80,7 @@ export class RankComponent implements OnInit {
       
         const newPost: Post = {
           id: post.id,
-          
+          createDate: new Date(),
           body: this.postForm.value.body,
           
         }

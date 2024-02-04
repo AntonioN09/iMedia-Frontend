@@ -11,6 +11,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { publicGuard } from '../guards/public/public.guard';
 import { privateGuard } from '../guards/private/private.guard'
 import { ModifyProfileComponent } from './modify-profile/modify-profile.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { adminGuard } from 'src/guards/admin/admin.guard';
+import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
+import { modGuard } from 'src/guards/mod/mod.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/public/login', pathMatch: 'full' }, 
@@ -36,56 +40,51 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileComponent,
         canActivate: [privateGuard]
-      }
-    ]
-  },
-  {
-    path: 'private',
-    children: [
+      }, 
       {
         path: 'post',
         component: PostComponent,
         canActivate: [privateGuard]
-      }
-    ]
-  },
-  {
-    path: 'private',
-    children: [
+      },
       {
         path: 'feed',
         component: FeedComponent,
         canActivate: [privateGuard]
-      }
-    ]
-  },
-  {
-    path: 'private',
-    children: [
+      },
       {
         path: 'follow',
         component: FollowComponent,
         canActivate: [privateGuard]
-      }
-    ]
-  },
-  {
-    path: 'private',
-    children: [
+      },
       {
         path: 'rank',
         component: RankComponent,
         canActivate: [privateGuard]
-      }
-    ]
-  },
-  {
-    path: 'private',
-    children: [
+      },
       {
         path: 'modify-profile',
         component: ModifyProfileComponent,
         canActivate: [privateGuard]
+      }
+    ]
+  },
+  {
+    path: 'admin',
+    children: [
+      {
+        path: 'dashboard',
+        component: AdminDashboardComponent,
+        canActivate: [adminGuard]
+      }
+    ]
+  },
+  {
+    path: 'mod',
+    children: [
+      {
+        path: 'dashboard',
+        component: ModDashboardComponent,
+        canActivate: [modGuard]
       }
     ]
   }

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from '../../models/user.model';
 
 @Injectable({
@@ -26,16 +26,6 @@ export class AuthService {
         const userId = userCredential.user?.uid;
         if (userId) {
           const newUser: User = {
-              // id: string,
-              // email: string,
-              // bio?: string,
-              // avatar?: string,
-              // age?: string,
-              // occupation?: string,
-              // personality?: string,
-              // technologies?: string[],
-              // goals?: string[],
-              // frustrations?: string[]
               id: userId,
               bio: "",
               age: "",
@@ -60,6 +50,14 @@ export class AuthService {
 
   isAuthenticated(): Observable<boolean> {
     return this.user.pipe(map(user => !!user));
+  }
+
+  isAdmin(): Observable<boolean> {
+    return of(true);
+  }
+
+  isMod(): Observable<boolean> {
+    return of(true);
   }
 
   getCurrentUserEmail(): Observable<string | null> {

@@ -17,7 +17,10 @@ export class NavBarComponent {
   currentUserId!: string | null;
   userData!: User | null;
 
-  constructor(private authService: AuthService, private postService: PostService, private userService: UserService, private router: Router) {
+  constructor(private authService: AuthService, 
+              private postService: PostService, 
+              private userService: UserService, 
+              private router: Router) {
     this.authService.isAuthenticated().subscribe((isAuthenticated: boolean) => {
       this.isLoggedIn = isAuthenticated;
     });
@@ -34,7 +37,6 @@ export class NavBarComponent {
     });
   }
 
-  // Add this method
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
