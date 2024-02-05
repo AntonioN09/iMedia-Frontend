@@ -32,6 +32,10 @@ export class PostService {
     return this.firestore.collection<Post>('posts', ref => ref.orderBy('likes', 'desc')).valueChanges({ idField: 'id' });
   }
 
+  getPostsSortedByTime(): Observable<Post[]> {
+    return this.firestore.collection<Post>('posts', ref => ref.orderBy('createDate', 'desc')).valueChanges({ idField: 'id' });
+  }
+
   getPostsByUserEmail(userEmail: string): Observable<any[]> {
     return this.userService.getFollowedUserEmails(userEmail).pipe(
       switchMap((followedUserEmails) => {

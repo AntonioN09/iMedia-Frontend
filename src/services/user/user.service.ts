@@ -11,6 +11,10 @@ import { User } from 'src/models/user.model';
 export class UserService {
   constructor(private firestore: AngularFirestore) {}
 
+  getUsersSortedByEmail(): Observable<User[]> {
+    return this.firestore.collection<User>('users', ref => ref.orderBy('email')).valueChanges({ idField: 'id' });
+  }
+
   followUser(userEmail: string | null, emailToFollow: string): Promise<void> {
     return this.firestore
       .collection('users', (ref) => ref.where('email', '==', emailToFollow))
@@ -106,5 +110,28 @@ export class UserService {
       })
     );
   }
+
+  warnUser(user: User, message: String): void {
+
+  }
+
+  removeUser(userEmail: String | null): void {
+
+  }
   
+  setAdmin(user: User): void {
+
+  }
+
+  unsetAdmin(user: User): void {
+
+  }
+
+  setMod(user: User): void {
+
+  }
+
+  unsetMod(user: User): void {
+
+  }
 }

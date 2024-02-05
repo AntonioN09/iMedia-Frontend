@@ -8,5 +8,8 @@ export interface User {
     personality?: string,
     technologies?: string[],
     goals?: string[],
-    frustrations?: string[]
+    frustrations?: string[],
+    editing?: boolean,
+    isAdmin?: boolean,
+    isMod?: boolean,
 }

@@ -17,7 +17,6 @@ export class RankComponent implements OnInit {
   currentUserEmail!: string | null;
   postForm!: FormGroup;
   userId!: string | null;
-
   userData!: User | null;
 
   constructor(private fb: FormBuilder,
@@ -51,6 +50,7 @@ export class RankComponent implements OnInit {
         };
       });
     });
+
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.userId = userId;
       if (this.userId) {
@@ -72,25 +72,22 @@ export class RankComponent implements OnInit {
       post.editing = true;
     }
   }
+
   editPost(post: any): void {
-    console.log(post)
-    console.log(this.postForm)
     if (this.postForm.valid) {
-      
-      
         const newPost: Post = {
           id: post.id,
           createDate: new Date(),
           body: this.postForm.value.body,
           
         }
-        this.postService.editPost(newPost).subscribe();
-        
-      }
-      this.toggleEdit(post);
-    }
-  
 
+        this.postService.editPost(newPost).subscribe();
+    }
+
+    this.toggleEdit(post);
+  }
+  
   toggleLike(postId: string | undefined): void {
     this.postService.likePost(postId).subscribe();
   }

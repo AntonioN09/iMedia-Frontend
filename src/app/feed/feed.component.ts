@@ -21,8 +21,6 @@ export class FeedComponent implements OnInit {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {
       if (currentUserEmail) {
         this.posts = this.postService.getPostsByUserEmail(currentUserEmail);
-        
-        
       } else {
         console.log('User not authenticated');
       }

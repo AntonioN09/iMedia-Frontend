@@ -13,6 +13,8 @@ import { PostService } from 'src/services/post/post.service';
 })
 export class NavBarComponent {
   isLoggedIn!: boolean;
+  isAdmin!: boolean;
+  isMod!: boolean;
   isMenuOpen = false;
   currentUserId!: string | null;
   userData!: User | null;
@@ -23,6 +25,14 @@ export class NavBarComponent {
               private router: Router) {
     this.authService.isAuthenticated().subscribe((isAuthenticated: boolean) => {
       this.isLoggedIn = isAuthenticated;
+    });
+
+    this.authService.isAdmin().subscribe((isAdmin: boolean) => {
+        this.isAdmin = isAdmin;
+    });
+
+    this.authService.isMod().subscribe((isMod: boolean) => {
+      this.isMod = isMod;
     });
 
     this.authService.getCurrentUserId().pipe(
@@ -77,5 +87,13 @@ export class NavBarComponent {
   
   modifyProfile() {
     this.router.navigate(['/private/modify-profile']);
+  }
+
+  adminDashboard() {
+    this.router.navigate(['/admin/dashboard']);
+  }
+
+  modDashboard() {
+    this.router.navigate(['/mod/dashboard']);
   }
 }

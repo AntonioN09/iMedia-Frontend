@@ -52,6 +52,10 @@
                         font-medium sdaw">Follow</a>
                     <a (click)="rank()" class=" text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm
                         font-medium sdaw">Rankings</a>
+                    <a *ngIf="isAdmin" (click)="adminDashboard()" class=" text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm
+                        font-medium sdaw">AdminDashboard</a>
+                    <a *ngIf="isMod" (click)="modDashboard()" class=" text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm
+                        font-medium sdaw">ModDashboard</a>
                 </div>
             </div>
             <div class="flex items-center">
