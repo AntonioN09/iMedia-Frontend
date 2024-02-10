@@ -15,6 +15,8 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { adminGuard } from 'src/guards/admin/admin.guard';
 import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
 import { modGuard } from 'src/guards/mod/mod.guard';
+import { CvComponent } from './cv/cv.component';
+import { ModifyCvComponent } from './modify-cv/modify-cv.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/public/login', pathMatch: 'full' }, 
@@ -64,6 +66,16 @@ const routes: Routes = [
       {
         path: 'modify-profile',
         component: ModifyProfileComponent,
+        canActivate: [privateGuard]
+      },
+      {
+        path: 'cv',
+        component: CvComponent,
+        canActivate: [privateGuard]
+      },
+      {
+        path: 'modify-cv',
+        component: ModifyCvComponent,
         canActivate: [privateGuard]
       }
     ]

@@ -89,6 +89,14 @@ export class NavBarComponent {
     this.router.navigate(['/private/modify-profile']);
   }
 
+  cv() {
+    this.router.navigate(['/private/cv']);
+  }
+
+  modifyCv() {
+    this.router.navigate(['/private/modify-cv']);
+  }
+
   adminDashboard() {
     this.router.navigate(['/admin/dashboard']);
   }

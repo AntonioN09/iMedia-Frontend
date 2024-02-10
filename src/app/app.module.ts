@@ -20,7 +20,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ModifyProfileComponent } from './modify-profile/modify-profile.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component'; 
+import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
+import { CvComponent } from './cv/cv.component';
+import { ModifyCvComponent } from './modify-cv/modify-cv.component'; 
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
     RankComponent,
     ModifyProfileComponent,
     AdminDashboardComponent,
-    ModDashboardComponent
+    ModDashboardComponent,
+    CvComponent,
+    ModifyCvComponent
     
   ],
   imports: [
