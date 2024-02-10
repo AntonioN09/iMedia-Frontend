@@ -5,6 +5,7 @@ import firebase from 'firebase/compat/app';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user.model';
+import { CV } from 'src/models/cv.model';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,17 @@ export class AuthService {
               avatar: "../../assets/img/default.png"
           };
           this.firestore.collection('users').doc(userId).set(newUser);
+          const newCv: CV = {
+            id: userId,
+            userId: userId,
+            contact: "",
+            summary: "",
+            experience: "",
+            education: "",
+            skills: [],
+            languages: []
+        };
+        this.firestore.collection('cvs').doc(userId).set(newCv);
         }
 
         return userCredential;

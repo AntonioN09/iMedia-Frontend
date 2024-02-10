@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from '../../services/user/user.service';
-import { User } from 'src/models/user.model';
 import html2pdf from 'html2pdf.js';
+import { CV } from 'src/models/cv.model';
 
 @Component({
   selector: 'app-cv',
@@ -14,7 +14,7 @@ export class CvComponent implements OnInit {
   userId: string | null = null;
   userEmail: string | null = null;
   username: string | null = null;
-  userData: User | null = null;
+  cvData: CV | null = null;
   constructor(private authService: AuthService, private userService: UserService) {}
 
   ngOnInit(): void {
@@ -29,8 +29,8 @@ export class CvComponent implements OnInit {
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.userId = userId;
       if (this.userId) {
-        this.userService.getUserById(this.userId).subscribe((userData) => {
-          this.userData = userData;
+        this.userService.getCvByUserId(this.userId).subscribe((cvData) => {
+          this.cvData = cvData;
         });
       }
     });

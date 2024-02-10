@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Follow } from '../../models/follow.model'
 import { User } from 'src/models/user.model';
+import { CV } from 'src/models/cv.model';
 
 @Injectable({
   providedIn: 'root',
@@ -133,5 +134,41 @@ export class UserService {
 
   unsetMod(user: User): void {
 
+  }
+
+  getCvByUserId(userId: string | null): Observable<CV | null> {
+    return this.firestore
+      .collection<CV>('cvs', (ref) => ref.where('userId', '==', userId))
+      .valueChanges()
+      .pipe(
+        map((cvs) => {
+          if (cvs.length > 0) {
+            return cvs[0];
+          } else {
+            return null;
+          }
+        })
+      );
+  }
+
+  updateCv(cv: CV): Observable<void>{
+    console.log(cv.id);
+    return this.firestore.collection('cvs').doc(cv.id).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          console.log(cv);
+          return this.firestore.collection('cvs').doc(cv.id).update({
+            contact: cv.contact,
+            summary: cv.summary,
+            experience: cv.experience,
+            education: cv.education,
+            skills: cv.skills,
+            languages: cv.languages
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
   }
 }
