@@ -21,7 +21,7 @@
                             <a href="#" class="hover:underline">{{ user.email }}</a>
                             <!-- <button type="button"
                                 class="ml-4 rounded-md bg-indigo-50 px-2.5 py-1.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Follow</button> -->
-                            <button type="button" (click)="removeUser(user.email)"
+                            <button type="button" (click)="removeUser(user.id)"
                                 class="ml-2 rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Remove
                             </button>
                         </p>
@@ -57,16 +57,16 @@
                             class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
                             Set Admin
                         </button>
-                        <button *ngIf="user.isAdmin" (click)="unsetAdmin(user)"
+                        <button *ngIf="user.isAdmin" (click)="setAdmin(user)"
                             class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
                             Unset Admin
                         </button>
-                        <p>[SPACE]</p>
+                        <div style="margin: 10px"></div>
                         <button *ngIf="!user.isMod" (click)="setMod(user)"
                             class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
                             Set Moderator
                         </button>
-                        <button *ngIf="user.isMod" (click)="unsetMod(user)"
+                        <button *ngIf="user.isMod" (click)="setMod(user)"
                             class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
                             Unset Moderator
                         </button>

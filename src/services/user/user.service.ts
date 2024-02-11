@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Follow } from '../../models/follow.model'
 import { User } from 'src/models/user.model';
 import { CV } from 'src/models/cv.model';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
   getUsersSortedByEmail(): Observable<User[]> {
     return this.firestore.collection<User>('users', ref => ref.orderBy('email')).valueChanges({ idField: 'id' });
@@ -116,24 +117,79 @@ export class UserService {
 
   }
 
-  removeUser(userEmail: String | null): void {
+  removeUser(userId: string): Observable<void> {
+    return from(this.firestore.doc(`users/${userId}`).delete()).pipe(
+      catchError(error => {
+        console.error('Error deleting user:', error);
+        throw error; // Rethrow the error to handle it in the caller
+      })
+    );
+  }
 
+  isAdmin(): Observable<boolean | null | undefined> {
+    return this.authService.getCurrentUserId().pipe(
+      switchMap((userId) => {
+        if (!userId) {
+          return of(null);
+        }
+        return this.firestore.collection<User>('users', (ref) => ref.where('id', '==', userId)).valueChanges();
+      }),
+      map((users) => {
+        if (users && users.length > 0) {
+          return users[0].isAdmin;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  isMod(): Observable<boolean | null | undefined> {
+    return this.authService.getCurrentUserId().pipe(
+      switchMap((userId) => {
+        if (!userId) {
+          return of(null);
+        }
+        return this.firestore.collection<User>('users', (ref) => ref.where('id', '==', userId)).valueChanges();
+      }),
+      map((users) => {
+        if (users && users.length > 0) {
+          return users[0].isMod;
+        } else {
+          return null;
+        }
+      })
+    );
   }
   
-  setAdmin(user: User): void {
-
+  setAdmin(user: User): Observable<void> {
+    return this.firestore.collection('users').doc(user.id).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          console.log(user);
+          return this.firestore.collection('users').doc(user.id).update({
+            isAdmin: !user.isAdmin
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
   }
 
-  unsetAdmin(user: User): void {
-
-  }
-
-  setMod(user: User): void {
-
-  }
-
-  unsetMod(user: User): void {
-    
+  setMod(user: User): Observable<void> {
+    return this.firestore.collection('users').doc(user.id).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          console.log(user);
+          return this.firestore.collection('users').doc(user.id).update({
+            isMod: !user.isMod
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
   }
 
   getCvByUserId(userId: string | null): Observable<CV | null> {

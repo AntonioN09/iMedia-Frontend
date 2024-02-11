@@ -36,7 +36,9 @@ export class AuthService {
               goals: [],
               frustrations: [],
               email: email,
-              avatar: "../../assets/img/default.png"
+              avatar: "../../assets/img/default.png",
+              isAdmin: false,
+              isMod: false
           };
           this.firestore.collection('users').doc(userId).set(newUser);
           const newCv: CV = {
@@ -62,14 +64,6 @@ export class AuthService {
 
   isAuthenticated(): Observable<boolean> {
     return this.user.pipe(map(user => !!user));
-  }
-
-  isAdmin(): Observable<boolean> {
-    return of(true);
-  }
-
-  isMod(): Observable<boolean> {
-    return of(true);
   }
 
   getCurrentUserEmail(): Observable<string | null> {

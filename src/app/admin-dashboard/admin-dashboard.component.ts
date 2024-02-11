@@ -77,23 +77,15 @@ export class AdminDashboardComponent implements OnInit {
     this.toggleWarn(user);
   }
   
-  removeUser(userEmail: any): void {
-    this.userService.removeUser(userEmail);
+  removeUser(userId: any): void {
+    this.userService.removeUser(userId);
   }
 
   setAdmin(user: any): void {
-    this.userService.setAdmin(user);
-  }
-
-  unsetAdmin(user: any): void {
-    this.userService.unsetAdmin(user);
+    this.userService.setAdmin(user).subscribe();
   }
 
   setMod(user: any): void {
-    this.userService.setMod(user);
-  }
-
-  unsetMod(user: any): void {
-    this.userService.unsetMod(user);
+    this.userService.setMod(user).subscribe();
   }
 }

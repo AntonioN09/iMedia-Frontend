@@ -13,8 +13,8 @@ import { PostService } from 'src/services/post/post.service';
 })
 export class NavBarComponent {
   isLoggedIn!: boolean;
-  isAdmin!: boolean;
-  isMod!: boolean;
+  isAdmin!: boolean | null | undefined;
+  isMod!: boolean | null | undefined;
   isMenuOpen = false;
   currentUserId!: string | null;
   userData!: User | null;
@@ -27,11 +27,11 @@ export class NavBarComponent {
       this.isLoggedIn = isAuthenticated;
     });
 
-    this.authService.isAdmin().subscribe((isAdmin: boolean) => {
+    this.userService.isAdmin().subscribe((isAdmin: boolean | null | undefined) => {
         this.isAdmin = isAdmin;
     });
 
-    this.authService.isMod().subscribe((isMod: boolean) => {
+    this.userService.isMod().subscribe((isMod: boolean | null | undefined) => {
       this.isMod = isMod;
     });
 
