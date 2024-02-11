@@ -17,7 +17,6 @@ export class ProfileComponent implements OnInit {
   username: string | null = null;
   userData: User | null = null;
   posts: Post[] = [];
-  @Input() getposts: Post[] = [];
   constructor(private authService: AuthService, private postService: PostService, private userService: UserService) {}
 
   ngOnInit(): void {
@@ -35,20 +34,7 @@ export class ProfileComponent implements OnInit {
         return this.postService.getPostsByUserId(userId);
       })
     ).subscribe((posts) => {
-      this.getposts = posts;
-      this.posts=this.getposts.map((getPost) => {
-        const createDate = getPost.createDate;
-
-        return {
-          id: getPost.id,
-          title: getPost.title,
-          body: getPost.body,
-          likes: getPost.likes,
-          userId: getPost.userId,
-          userEmail: getPost.userEmail,
-          createDate: createDate,
-        };
-      });
+      this.posts = posts;
       this.userService.getUserById(this.userId).subscribe((userData) => {
         this.userData = userData;
       });

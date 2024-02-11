@@ -31,14 +31,15 @@ export class MessageComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.currentUserId = userId;
+      if (this.currentUserId) {
+        this.userService.getUserById(this.currentUserId).subscribe((userData) => {
+          this.userData = userData;
+        });
+      }
     });
 
     this.authService.getCurrentUserEmail().subscribe((userEmail) => {
       this.currentUserEmail = userEmail;
-    });
-
-    this.userService.getUserById(this.currentUserId).subscribe((userData) => {
-      this.userData = userData;
     });
   }
 
@@ -47,11 +48,13 @@ export class MessageComponent implements OnInit {
     if (this.messageForm.valid) {
       const userId = this.currentUserId;
       const userEmail = this.currentUserEmail;
+      const userAvatar = this.userData?.avatar;
       if (userId) {
         const newMessage: Message = {
           subject: this.messageForm.value.subject,
           body: this.messageForm.value.body,
           userId: userId,
+          userAvatar: userAvatar,
           senderEmail: userEmail,
           receiverEmail: this.messageForm.value.emailTo,
           createDate: new Date(),

@@ -29,14 +29,15 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.currentUserId = userId;
+      if (this.currentUserId) {
+        this.userService.getUserById(this.currentUserId).subscribe((userData) => {
+          this.userData = userData;
+        });
+      }
     });
 
     this.authService.getCurrentUserEmail().subscribe((userEmail) => {
       this.currentUserEmail = userEmail;
-    });
-
-    this.userService.getUserById(this.currentUserId).subscribe((userData) => {
-      this.userData = userData;
     });
   }
 
@@ -45,11 +46,14 @@ export class PostComponent implements OnInit {
     if (this.postForm.valid) {
       const userId = this.currentUserId;
       const userEmail = this.currentUserEmail;
+      const userAvatar = this.userData?.avatar;
+      console.log(userAvatar);
       if (userId) {
         const newPost: Post = {
           body: this.postForm.value.body,
           likes: 0,
           userId: userId,
+          userAvatar: userAvatar,
           userEmail: userEmail,
           createDate: new Date(),
         };

@@ -10,7 +10,6 @@ import { UserService } from 'src/services/user/user.service';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-  @Input() getusers: User[] = [];
   users: User[] = [];
   currentUserEmail!: string | null;
   userForm!: FormGroup;
@@ -30,24 +29,7 @@ export class AdminDashboardComponent implements OnInit {
       this.currentUserEmail = userEmail;
     });
     this.userService.getUsersSortedByEmail().subscribe((users) => {
-      this.getusers = users;
-      
-      this.users = this.getusers.map((getUser) => {
-        return {
-          id: getUser.id,
-          bio: getUser.bio,
-          age: getUser.age,
-          occupation: getUser.occupation,
-          personality: getUser.personality,
-          technologies: getUser.technologies,
-          goals: getUser.goals,
-          frustrations: getUser.frustrations,
-          email: getUser.email,
-          avatar: "../../assets/img/default.png",
-          isAdmin: getUser.isAdmin,
-          isMod: getUser.isMod
-        };
-      });
+      this.users = users;
     });
 
     this.authService.getCurrentUserId().subscribe((userId) => {

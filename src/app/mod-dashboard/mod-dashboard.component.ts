@@ -34,21 +34,7 @@ export class ModDashboardComponent implements OnInit {
       this.currentUserEmail = userEmail;
     });
     this.postService.getPostsSortedByTime().subscribe((posts) => {
-      this.getposts = posts;
-      
-      this.posts = this.getposts.map((getPost) => {
-        const createDate = getPost.createDate;
-
-        return {
-          id: getPost.id,
-          title: getPost.title,
-          body: getPost.body,
-          likes: getPost.likes,
-          userId: getPost.userId,
-          userEmail: getPost.userEmail,
-          createDate: createDate
-        };
-      });
+      this.posts = posts;
     });
 
     this.authService.getCurrentUserId().subscribe((userId) => {
