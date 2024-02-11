@@ -19,6 +19,7 @@ import { CvComponent } from './cv/cv.component';
 import { ModifyCvComponent } from './modify-cv/modify-cv.component';
 import { MessageComponent } from './message/message.component';
 import { InboxComponent } from './inbox/inbox.component';
+import { CommentComponent } from './comment/comment.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/public/login', pathMatch: 'full' }, 
@@ -63,6 +64,11 @@ const routes: Routes = [
       {
         path: 'rank',
         component: RankComponent,
+        canActivate: [privateGuard]
+      },
+      { 
+        path: 'comments/:postId', 
+        component: CommentComponent,
         canActivate: [privateGuard]
       },
       {

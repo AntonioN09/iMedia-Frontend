@@ -1,10 +1,42 @@
-<div *ngIf="!((posts | async)?.length); else content" class="container mx-auto">
+<div class="container mx-auto flex flex-col justify-center min-h-screen py-12 sm:px-6 lg:px-8 -mt-16">
+    <div class="max-w-md w-full space-y-8 mx-auto">
+      <div class="bg-white shadow rounded-lg p-8">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Comment section
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+          Your insights are valuable to us. Share your experiences, ideas, or thoughts and engage with the community.
+        </p>
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+          <div class="rounded-md shadow-sm">
+            <div>
+              <label for="body" class="sr-only">Post Body</label>
+              <textarea id="body" name="body" rows="4"
+                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="What's on your mind?" formControlName="body"
+                style="resize: vertical; max-height: 200px;"></textarea> <!-- Inline style for max-height -->
+            </div>
+          </div>
+  
+          <div>
+            <button type="submit"
+              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              [disabled]="commentForm.invalid">
+              Comment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div *ngIf="!((comments | async)?.length); else content" class="container mx-auto">
     <div class="bg-white">
         <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">It seems you haven't followed
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">It seems this post
                     <br>
-                    any accounts
+                    has no comments
                     yet.
                 </h2>
                 <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">By following other users, you’ll begin
@@ -23,25 +55,25 @@
 </div>
 
 <ng-template #content>
-    <div *ngIf="posts" class="container mx-auto">
+    <div *ngIf="comments" class="container mx-auto">
 
-        <div style="overflow-wrap: break-word" *ngFor="let post of posts | async">
+        <div style="overflow-wrap: break-word" *ngFor="let comment of comments | async">
 
             <!-- Adjusted box styling here -->
             <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
                 <div class="-mt-6 -mb-6">
                     <div class="flex space-x-3">
                         <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" [src]="post.userAvatar ? post.userAvatar : '../../assets/img/default.png'" alt="">
+                            <img class="h-10 w-10 rounded-full" [src]="comment.userAvatar ? comment.userAvatar : '../../assets/img/default.png'" alt="">
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-sm font-semibold text-gray-900">
-                                <a href="#" class="hover:underline">{{ post.userEmail }}</a>
+                                <a href="#" class="hover:underline">{{ comment.userEmail }}</a>
                             </p>
                             <p class="text-sm text-gray-500">
                                 <!-- <a href="#" class="hover:underline">{{ post.formattedDate }} </a> -->
-                                <a href="#" class="hover:underline">{{ post.createDate.toDate().toLocaleDateString() }}
-                                    {{post.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                                <a href="#" class="hover:underline">{{ comment.createDate.toDate().toLocaleDateString() }}
+                                    {{comment.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
                                     minute:'2-digit'})}}
                                 </a>
                             </p>
@@ -54,13 +86,13 @@
                     </div>
                     <div>
                         <p class="mt-4 text-gray-800 font-sans font-normal">
-                            {{ post.body }}
+                            {{ comment.body }}
                         </p>
                     </div>
                     <!-- Interaction bar for likes and comments -->
                     <div class="flex justify-between items-center mt-4">
                         <div class="flex items-center">
-                            <button (click)="toggleLike(post.id)" class="flex items-center mr-4">
+                            <button (click)="toggleLike(comment.id)" class="flex items-center mr-4">
                                 <!-- <svg class="w-6 h-6 hover:text-red-500" [ngClass]="{'text-red-500': 0, 'text-gray-500': 1}"
                                     fill="currentColor" viewBox="0 0 24 24">
                                     <path
@@ -72,9 +104,9 @@
                                         d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
                                 </svg>
 
-                                <span class="text-gray-700 text-sm ml-1">{{ post.likes }}</span>
+                                <span class="text-gray-700 text-sm ml-1">{{ comment.likes }}</span>
                             </button>
-                            <button (click)="redirectToComments(post.id)" class="flex items-center ml-2">
+                            <!-- <button (click)="redirectToComments(post.id)" class="flex items-center ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="w-6 h-6">
                                     <path fill-rule="evenodd"
@@ -82,8 +114,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
 
-                                <span class="text-gray-700 text-sm ml-1">{{ post.numComments ? post.numComments : 0 }}</span>
-                            </button>
+                                <span class="text-gray-700 text-sm ml-1">{{ 12 }}</span>
+                            </button> -->
                         </div>
                     </div>
                 </div>

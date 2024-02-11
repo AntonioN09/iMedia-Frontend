@@ -1,12 +1,11 @@
-export interface Post {
+export interface Comment {
     id?: string;
-    title?: string;
+    postId: string;
     body?: string;
     likes?: number;
     userId?: string;
     userAvatar?: string;
     userEmail?: string | null;
     createDate: Date;
-    numComments?: Number;
     editing?: boolean;
 }

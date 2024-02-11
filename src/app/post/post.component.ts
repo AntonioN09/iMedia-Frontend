@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { PostService } from '../../services/post/post.service';
-import { Post } from '../../models/post.model';
 import { UserService } from 'src/services/user/user.service';
+import { Post } from '../../models/post.model';
 import { User } from 'src/models/user.model';
 
 @Component({
@@ -47,7 +47,6 @@ export class PostComponent implements OnInit {
       const userId = this.currentUserId;
       const userEmail = this.currentUserEmail;
       const userAvatar = this.userData?.avatar;
-      console.log(userAvatar);
       if (userId) {
         const newPost: Post = {
           body: this.postForm.value.body,
@@ -56,6 +55,7 @@ export class PostComponent implements OnInit {
           userAvatar: userAvatar,
           userEmail: userEmail,
           createDate: new Date(),
+          numComments: 0
         };
 
         this.postService.addPost(newPost).then(() => {

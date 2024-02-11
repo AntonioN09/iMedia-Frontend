@@ -12,7 +12,7 @@
 
 <div class="container mx-auto -mt-20">
 
-    <div style="overflow-wrap: break-word" *ngFor="let post of posts">
+    <div style="overflow-wrap: break-word" *ngFor="let post of posts | async">
 
         <!-- Adjusted box styling here -->
         <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
@@ -31,7 +31,10 @@
                             </button>
                         </p>
                         <p class="text-sm text-gray-500">
-                            <a href="#" class="hover:underline">{{ post.createDate }} </a>
+                            <a href="#" class="hover:underline">{{ post.createDate.toDate().toLocaleDateString() }}
+                                {{post.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                                minute:'2-digit'})}}
+                            </a>
                         </p>
 
                     </div>
@@ -72,7 +75,7 @@
 
                             <span class="text-gray-700 text-sm ml-1">{{ post.likes }}</span>
                         </button>
-                        <!-- <button (click)="toggleLike(post.id)" class="flex items-center ml-2">
+                        <button (click)="redirectToComments(post.id)" class="flex items-center ml-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="w-6 h-6">
                                 <path fill-rule="evenodd"
@@ -80,8 +83,8 @@
                                     clip-rule="evenodd" />
                             </svg>
 
-                            <span class="text-gray-700 text-sm ml-1">{{ 12 }}</span>
-                        </button> -->
+                            <span class="text-gray-700 text-sm ml-1">{{ post.numComments ? post.numComments : 0 }}</span>
+                        </button>
                     </div>
                 </div>
             </div>

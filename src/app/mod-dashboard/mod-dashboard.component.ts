@@ -5,6 +5,7 @@ import { AuthService } from 'src/services/auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/models/user.model';
 import { UserService } from 'src/services/user/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-mod-dashboard',
@@ -12,8 +13,7 @@ import { UserService } from 'src/services/user/user.service';
   styleUrls: ['./mod-dashboard.component.css']
 })
 export class ModDashboardComponent implements OnInit {
-  @Input() getposts: Post[] = [];
-  posts: Post[] = [];
+  posts!: Observable<any>;
   currentUserEmail!: string | null;
   postForm!: FormGroup;
   userId!: string | null;
@@ -33,9 +33,8 @@ export class ModDashboardComponent implements OnInit {
     this.authService.getCurrentUserEmail().subscribe((userEmail) => {
       this.currentUserEmail = userEmail;
     });
-    this.postService.getPostsSortedByTime().subscribe((posts) => {
-      this.posts = posts;
-    });
+
+    this.posts = this.postService.getPostsSortedByTime();
 
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.userId = userId;

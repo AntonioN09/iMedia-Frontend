@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 
 export const modGuard: CanActivateFn = (route, state) => {
-  const userService:UserService = inject(UserService);
+  const userService: UserService = inject(UserService);
   const router: Router = inject(Router);
 
   return userService.isMod().pipe(take(1),

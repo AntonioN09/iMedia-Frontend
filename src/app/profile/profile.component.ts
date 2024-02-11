@@ -5,6 +5,7 @@ import { PostService } from '../../services/post/post.service';
 import { switchMap } from 'rxjs/operators';
 import { UserService } from '../../services/user/user.service';
 import { User } from 'src/models/user.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit {
   userEmail: string | null = null;
   username: string | null = null;
   userData: User | null = null;
-  posts: Post[] = [];
+  posts!: Observable<any>;
   constructor(private authService: AuthService, private postService: PostService, private userService: UserService) {}
 
   ngOnInit(): void {
@@ -28,13 +29,8 @@ export class ProfileComponent implements OnInit {
       this.username = username;
     });
 
-    this.authService.getCurrentUserId().pipe(
-      switchMap((userId) => {
-        this.userId = userId;
-        return this.postService.getPostsByUserId(userId);
-      })
-    ).subscribe((posts) => {
-      this.posts = posts;
+    this.authService.getCurrentUserId().subscribe((userId) => {
+      this.posts = this.postService.getPostsByUserId(userId);
       this.userService.getUserById(this.userId).subscribe((userData) => {
         this.userData = userData;
       });

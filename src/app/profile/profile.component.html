@@ -108,7 +108,7 @@
 
 <div class="container mx-auto -mt-20">
 
-    <div style="overflow-wrap: break-word" *ngFor="let post of posts">
+    <div style="overflow-wrap: break-word" *ngFor="let post of posts | async">
 
         <!-- Adjusted box styling here -->
         <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
@@ -127,7 +127,10 @@
                             </button> -->
                         </p>
                         <p class="text-sm text-gray-500">
-                            <a href="#" class="hover:underline">{{post.createDate}}</a>
+                            <a href="#" class="hover:underline">{{ post.createDate.toDate().toLocaleDateString() }}
+                                {{post.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                                minute:'2-digit'})}}
+                            </a>
                         </p>
 
                     </div>

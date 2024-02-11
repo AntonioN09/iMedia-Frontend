@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { PostService } from '../../services/post/post.service';
 import { UserService } from '../../services/user/user.service';
 import { User } from 'src/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-feed',
@@ -15,7 +16,10 @@ export class FeedComponent implements OnInit {
   userId!: string | null;
   userData!: User | null;
 
-  constructor(private authService: AuthService, private postService: PostService, private userService: UserService) {}
+  constructor(private authService: AuthService, 
+              private postService: PostService, 
+              private userService: UserService,
+              private router: Router) {}
 
   ngOnInit() {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {
@@ -38,7 +42,10 @@ export class FeedComponent implements OnInit {
   
   toggleLike(postId: string | undefined): void {
     this.postService.likePost(postId).subscribe();
-    console.log(this.userData?.avatar);
+  }
+
+  redirectToComments(postId: string | undefined): void {
+    this.router.navigate(['private/comments', postId]);
   }
 
   displayAvatar(userId: string | null): Observable<string | undefined> {

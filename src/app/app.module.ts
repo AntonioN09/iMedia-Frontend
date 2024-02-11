@@ -24,7 +24,8 @@ import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
 import { CvComponent } from './cv/cv.component';
 import { ModifyCvComponent } from './modify-cv/modify-cv.component';
 import { MessageComponent } from './message/message.component';
-import { InboxComponent } from './inbox/inbox.component'; 
+import { InboxComponent } from './inbox/inbox.component';
+import { CommentComponent } from './comment/comment.component'; 
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { InboxComponent } from './inbox/inbox.component';
     CvComponent,
     ModifyCvComponent,
     MessageComponent,
-    InboxComponent
+    InboxComponent,
+    CommentComponent
     
   ],
   imports: [

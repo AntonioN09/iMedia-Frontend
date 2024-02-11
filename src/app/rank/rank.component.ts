@@ -5,6 +5,8 @@ import { AuthService } from 'src/services/auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/models/user.model';
 import { UserService } from 'src/services/user/user.service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rank',
@@ -12,8 +14,7 @@ import { UserService } from 'src/services/user/user.service';
   styleUrls: ['./rank.component.css']
 })
 export class RankComponent implements OnInit {
-  @Input() getposts: Post[] = [];
-  posts: Post[] = [];
+  posts!: Observable<any[]>;
   currentUserEmail!: string | null;
   postForm!: FormGroup;
   userId!: string | null;
@@ -22,9 +23,9 @@ export class RankComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private userService: UserService, 
               private postService: PostService, 
-              private authService: AuthService) {
+              private authService: AuthService,
+              private router: Router) {
     this.postForm = this.fb.group({
-      
       body: ['', Validators.required],
     });
   }
@@ -33,9 +34,8 @@ export class RankComponent implements OnInit {
     this.authService.getCurrentUserEmail().subscribe((userEmail) => {
       this.currentUserEmail = userEmail;
     });
-    this.postService.getPostsSortedByLikes().subscribe((posts) => {
-      this.posts = posts;
-    });
+    
+    this.posts = this.postService.getPostsSortedByLikes();
 
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.userId = userId;
@@ -65,17 +65,18 @@ export class RankComponent implements OnInit {
           id: post.id,
           createDate: new Date(),
           body: this.postForm.value.body,
-          
         }
-
         this.postService.editPost(newPost).subscribe();
     }
-
     this.toggleEdit(post);
   }
   
   toggleLike(postId: string | undefined): void {
     this.postService.likePost(postId).subscribe();
+  }
+
+  redirectToComments(postId: string | undefined): void {
+    this.router.navigate(['private/comments', postId]);
   }
 
   followUser(following: string | null | undefined): void {
