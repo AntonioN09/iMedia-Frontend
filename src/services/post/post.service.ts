@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, from, of } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { Observable, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { Post } from '../../models/post.model';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { Comment } from '../../models/comment.model';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
   
-  constructor(private firestore: AngularFirestore, private authService: AuthService, private userService: UserService) {}
+  constructor(private firestore: AngularFirestore, private userService: UserService) {}
 
   getPosts(): Observable<Post[]> {
     return this.firestore
@@ -24,14 +22,6 @@ export class PostService {
     return this.firestore
       .collection<Post>('posts', (ref) =>
         ref.where('userId', '==', userId).orderBy('createDate', 'desc')
-      )
-      .valueChanges({ idField: 'id' });
-  }
-
-  getCommentsByPostId(postId: string | null): Observable<any[]> {
-    return this.firestore
-      .collection<Comment>('comments', (ref) =>
-        ref.where('postId', '==', postId).orderBy('createDate', 'desc')
       )
       .valueChanges({ idField: 'id' });
   }
@@ -74,36 +64,8 @@ export class PostService {
     );
   }
 
-  incrementCommentCount(postId: string): Observable<void> {
-    return this.firestore.collection('posts').doc(postId).get().pipe(
-      switchMap((doc) => {
-        if (doc.exists) {
-          const postData = doc.data() as { numComments?: number };
-          const numComments = postData.numComments || 0; 
-          const updatedNumComments = numComments + 1; 
-          return from(this.firestore.collection('posts').doc(postId).update({ numComments: updatedNumComments }));
-        } else {
-          return Promise.reject('Document not found');
-        }
-      })
-    );
-  }
-
   addPost(post: Post): Promise<void> {
     return this.firestore.collection('posts').add(post).then(() => {});
-  }
-
-  addComment(comment: Comment): Observable<void> {
-    return from(this.firestore.collection('comments').add(comment)).pipe(
-      switchMap((docRef) => {
-        return this.incrementCommentCount(comment.postId).pipe(
-          catchError((error) => {
-            console.error('Error incrementing comment count:', error);
-            return [];
-          })
-        );
-      })
-    );
   }
 
   likePost(postId: string | undefined): Observable<void> {
@@ -121,30 +83,5 @@ export class PostService {
         }
       })
     );
-  }
-
-  likeComment(commentId: string | undefined): Observable<void> {
-    return this.firestore.collection('comments').doc(commentId).get().pipe(
-      switchMap((doc) => {
-        if (doc.exists) {
-          const currentLikes = (doc.data() as Comment)?.likes || 0;
-          const updatedLikes = currentLikes + 1;
-
-          return this.firestore.collection('comments').doc(commentId).update({
-            likes: updatedLikes,
-          });
-        } else {
-          return Promise.reject('Document not found');
-        }
-      })
-    );
-  }
-
-  getCommentCountByPostId(postId: string): Observable<number> {
-    return this.firestore.collection('comments', ref => ref.where('postId', '==', postId))
-      .valueChanges()
-      .pipe(
-        map(comments => comments.length)
-      );
   }
 }

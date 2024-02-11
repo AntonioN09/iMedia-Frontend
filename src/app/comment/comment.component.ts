@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
-import { PostService } from '../../services/post/post.service';
+import { CommentService } from '../../services/comment/comment.service';
 import { UserService } from 'src/services/user/user.service';
 import { Comment } from '../../models/comment.model';
 import { User } from 'src/models/user.model';
@@ -24,7 +24,7 @@ export class CommentComponent {
   constructor(private route: ActivatedRoute, 
               private fb: FormBuilder, 
               private authService: AuthService, 
-              private postService: PostService, 
+              private commentService: CommentService, 
               private userService: UserService) {
     this.route.params.subscribe(params => {
       this.postId = params['postId'];
@@ -48,7 +48,7 @@ export class CommentComponent {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {
       if (currentUserEmail) {
         this.currentUserEmail = currentUserEmail;
-        this.comments = this.postService.getCommentsByPostId(this.postId);
+        this.comments = this.commentService.getCommentsByPostId(this.postId);
       } else {
         console.log('User not authenticated');
       }
@@ -71,7 +71,7 @@ export class CommentComponent {
           createDate: new Date(),
         };
 
-        this.postService.addComment(newComment).subscribe(() => {
+        this.commentService.addComment(newComment).subscribe(() => {
           this.commentForm.reset();
         });
       }
@@ -79,6 +79,6 @@ export class CommentComponent {
   }
 
   toggleLike(commentId: string | undefined): void {
-    this.postService.likeComment(commentId).subscribe();
+    this.commentService.likeComment(commentId).subscribe();
   }
 }
