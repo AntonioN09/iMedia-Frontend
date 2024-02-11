@@ -17,6 +17,8 @@ import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
 import { modGuard } from 'src/guards/mod/mod.guard';
 import { CvComponent } from './cv/cv.component';
 import { ModifyCvComponent } from './modify-cv/modify-cv.component';
+import { MessageComponent } from './message/message.component';
+import { InboxComponent } from './inbox/inbox.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/public/login', pathMatch: 'full' }, 
@@ -66,6 +68,16 @@ const routes: Routes = [
       {
         path: 'modify-profile',
         component: ModifyProfileComponent,
+        canActivate: [privateGuard]
+      },
+      {
+        path: 'inbox',
+        component: InboxComponent,
+        canActivate: [privateGuard]
+      },
+      {
+        path: 'message',
+        component: MessageComponent,
         canActivate: [privateGuard]
       },
       {

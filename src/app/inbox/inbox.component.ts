@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
-import { PostService } from '../../services/post/post.service';
+import { MessageService } from '../../services/message/message.service';
 import { UserService } from '../../services/user/user.service';
 import { User } from 'src/models/user.model';
 
 @Component({
-  selector: 'app-feed',
-  templateUrl: './feed.component.html',
-  styleUrls: ['./feed.component.css']
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html',
+  styleUrls: ['./inbox.component.css']
 })
-export class FeedComponent implements OnInit {
-  posts!: Observable<any[]>;
+export class InboxComponent implements OnInit {
+  messages!: Observable<any[]>;
   userId!: string | null;
   userData!: User | null;
 
-  constructor(private authService: AuthService, private postService: PostService, private userService: UserService) {}
+  constructor(private authService: AuthService, private messageService: MessageService, private userService: UserService) {}
 
   ngOnInit() {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {
       if (currentUserEmail) {
-        this.posts = this.postService.getPostsByUserEmail(currentUserEmail);
+        this.messages = this.messageService.getReceivedMessagesByUserEmail(currentUserEmail);
       } else {
         console.log('User not authenticated');
       }
@@ -34,11 +34,6 @@ export class FeedComponent implements OnInit {
         });
       }
     });
-  }
-  
-  toggleLike(postId: string | undefined): void {
-    this.postService.likePost(postId).subscribe();
-    console.log(this.userData?.avatar);
   }
 
   displayAvatar(userId: string | null): Observable<string | undefined> {

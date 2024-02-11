@@ -89,6 +89,14 @@ export class NavBarComponent {
     this.router.navigate(['/private/modify-profile']);
   }
 
+  inbox() {
+    this.router.navigate(['/private/inbox']);
+  }
+
+  message() {
+    this.router.navigate(['/private/message']);
+  }
+
   cv() {
     this.router.navigate(['/private/cv']);
   }

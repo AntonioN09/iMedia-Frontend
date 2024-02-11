@@ -22,7 +22,9 @@ import { ModifyProfileComponent } from './modify-profile/modify-profile.componen
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ModDashboardComponent } from './mod-dashboard/mod-dashboard.component';
 import { CvComponent } from './cv/cv.component';
-import { ModifyCvComponent } from './modify-cv/modify-cv.component'; 
+import { ModifyCvComponent } from './modify-cv/modify-cv.component';
+import { MessageComponent } from './message/message.component';
+import { InboxComponent } from './inbox/inbox.component'; 
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { ModifyCvComponent } from './modify-cv/modify-cv.component';
     AdminDashboardComponent,
     ModDashboardComponent,
     CvComponent,
-    ModifyCvComponent
+    ModifyCvComponent,
+    MessageComponent,
+    InboxComponent
     
   ],
   imports: [

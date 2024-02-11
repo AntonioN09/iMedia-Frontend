@@ -133,7 +133,7 @@ export class UserService {
   }
 
   unsetMod(user: User): void {
-
+    
   }
 
   getCvByUserId(userId: string | null): Observable<CV | null> {

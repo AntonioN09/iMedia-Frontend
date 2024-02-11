@@ -1,0 +1,47 @@
+<div class="container mx-auto flex flex-col justify-center min-h-screen py-12 sm:px-6 lg:px-8 -mt-16">
+    <div class="max-w-md w-full space-y-8 mx-auto">
+      <div class="bg-white shadow rounded-lg p-8">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Send a Message
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+          Our service for instant messaging makes it easy for you to get in touch with anyone
+        </p>
+        <form [formGroup]="messageForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+          <div class="rounded-md shadow-sm">
+            <div>
+                <label for="emailTo" class="sr-only">To</label>
+                <input id="emailTo" name="emailTo"
+                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Who should receive this message?" formControlName="emailTo">
+            </div>
+          </div>
+          <div class="rounded-md shadow-sm">
+            <div>
+                <label for="subject" class="sr-only">Subject</label>
+                <input id="subject" name="subject"
+                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="What is your message about?" formControlName="subject">
+            </div>
+          </div>
+          <div class="rounded-md shadow-sm">
+            <div>
+              <label for="body" class="sr-only">Message Body</label>
+              <textarea id="body" name="body" rows="4"
+                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Type your message here" formControlName="body"
+                style="resize: vertical; max-height: 200px;"></textarea>
+            </div>
+          </div>
+  
+          <div>
+            <button type="submit"
+              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              [disabled]="messageForm.invalid">
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
