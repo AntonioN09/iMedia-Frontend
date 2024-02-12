@@ -20,6 +20,7 @@ import { ModifyCvComponent } from './modify-cv/modify-cv.component';
 import { MessageComponent } from './message/message.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { CommentComponent } from './comment/comment.component';
+import { NotificationComponent } from './notification/notification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/public/login', pathMatch: 'full' }, 
@@ -94,6 +95,11 @@ const routes: Routes = [
       {
         path: 'modify-cv',
         component: ModifyCvComponent,
+        canActivate: [privateGuard]
+      },
+      {
+        path: 'notification',
+        component: NotificationComponent,
         canActivate: [privateGuard]
       }
     ]

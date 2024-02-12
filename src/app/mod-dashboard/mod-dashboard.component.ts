@@ -24,7 +24,6 @@ export class ModDashboardComponent implements OnInit {
               private postService: PostService, 
               private authService: AuthService) {
     this.postForm = this.fb.group({
-      
       body: ['', Validators.required],
     });
   }
@@ -58,7 +57,7 @@ export class ModDashboardComponent implements OnInit {
     }
   }
 
-  editPost(post: any): void {
+  moderatePost(post: any): void {
     if (this.postForm.valid) {
         const newPost: Post = {
           id: post.id,
@@ -66,6 +65,8 @@ export class ModDashboardComponent implements OnInit {
           body: this.postForm.value.body, 
         }
         this.postService.editPost(newPost).subscribe();
+        const message: string = "The post '" + post.body + "' has been moderated";
+        this.userService.notifyUser(this.userData, message, post.userEmail);
     }
 
     this.toggleEdit(post);

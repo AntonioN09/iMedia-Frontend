@@ -6,12 +6,12 @@ import { UserService } from '../../services/user/user.service';
 import { User } from 'src/models/user.model';
 
 @Component({
-  selector: 'app-inbox',
-  templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.css']
+  selector: 'app-notification',
+  templateUrl: './notification.component.html',
+  styleUrls: ['./notification.component.css']
 })
-export class InboxComponent implements OnInit {
-  messages!: Observable<any[]>;
+export class NotificationComponent implements OnInit {
+  notifications!: Observable<any[]>;
   userId!: string | null;
   userData!: User | null;
 
@@ -20,7 +20,7 @@ export class InboxComponent implements OnInit {
   ngOnInit() {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {
       if (currentUserEmail) {
-        this.messages = this.messageService.getReceivedMessagesByUserEmail(currentUserEmail);
+        this.notifications = this.messageService.getReceivedNotificationsByUserEmail(currentUserEmail);
       } else {
         console.log('User not authenticated');
       }

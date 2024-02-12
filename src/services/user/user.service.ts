@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Follow } from '../../models/follow.model'
+import { Follow } from '../../models/follow.model';
+import { Notification } from '../../models/notification.model';
 import { User } from 'src/models/user.model';
 import { CV } from 'src/models/cv.model';
 import { AuthService } from '../auth/auth.service';
@@ -113,8 +114,17 @@ export class UserService {
     );
   }
 
-  warnUser(user: User, message: String): void {
+  notifyUser(user: User | null, message: string, receiverEmail: string): Promise<void> {
+    const notification: Notification = {
+      body: message,
+      userId: user?.id,
+      userAvatar: user?.avatar,
+      senderEmail: user?.email,
+      receiverEmail: receiverEmail,
+      createDate: new Date()
+    }
 
+    return this.firestore.collection('notifications').add(notification).then();
   }
 
   removeUser(userId: string): Observable<void> {

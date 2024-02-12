@@ -105,6 +105,10 @@ export class NavBarComponent {
     this.router.navigate(['/private/modify-cv']);
   }
 
+  notification() {
+    this.router.navigate(['/private/notification']);
+  }
+
   adminDashboard() {
     this.router.navigate(['/admin/dashboard']);
   }

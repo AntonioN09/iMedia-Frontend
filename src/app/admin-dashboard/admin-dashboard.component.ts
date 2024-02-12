@@ -53,8 +53,7 @@ export class AdminDashboardComponent implements OnInit {
   warnUser(user: any): void {
     if(this.userForm.valid){
       let message = this.userForm.value.warnMessage;
-      this.userService.warnUser(user, message);
-      console.log(message);
+      this.userService.notifyUser(this.userData, message, user.email);
     }
     this.toggleWarn(user);
   }

@@ -46,7 +46,7 @@
                     </p>
                 </div>
                 <div *ngIf="post.editing" class="mt-4">
-                    <form [formGroup]="postForm" (ngSubmit)="editPost(post)">
+                    <form [formGroup]="postForm" (ngSubmit)="moderatePost(post)">
                         <textarea formControlName="body" id="body" class="w-full h-20 p-2 border rounded"
                             placeholder="Edit post...">{{ post.body }}</textarea>
                         <button type="submit"

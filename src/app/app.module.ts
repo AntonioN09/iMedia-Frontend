@@ -25,7 +25,8 @@ import { CvComponent } from './cv/cv.component';
 import { ModifyCvComponent } from './modify-cv/modify-cv.component';
 import { MessageComponent } from './message/message.component';
 import { InboxComponent } from './inbox/inbox.component';
-import { CommentComponent } from './comment/comment.component'; 
+import { CommentComponent } from './comment/comment.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { CommentComponent } from './comment/comment.component';
     ModifyCvComponent,
     MessageComponent,
     InboxComponent,
-    CommentComponent
+    CommentComponent,
+    NotificationComponent
     
   ],
   imports: [
