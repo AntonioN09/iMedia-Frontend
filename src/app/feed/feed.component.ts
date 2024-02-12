@@ -16,10 +16,10 @@ export class FeedComponent implements OnInit {
   userId!: string | null;
   userData!: User | null;
 
-  constructor(private authService: AuthService, 
-              private postService: PostService, 
-              private userService: UserService,
-              private router: Router) {}
+  constructor(public authService: AuthService, 
+              public postService: PostService, 
+              public userService: UserService,
+              public router: Router) {}
 
   ngOnInit() {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {

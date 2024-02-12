@@ -30,8 +30,10 @@ export class ProfileComponent implements OnInit {
     });
 
     this.authService.getCurrentUserId().subscribe((userId) => {
+      this.userId = userId;
       this.posts = this.postService.getPostsByUserId(userId);
       this.userService.getUserById(this.userId).subscribe((userData) => {
+        console.log(userData);
         this.userData = userData;
       });
     });

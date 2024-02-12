@@ -96,8 +96,7 @@ export class UserService {
     return this.firestore.collection('users').doc(user.id).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
-          console.log(user);
-          return this.firestore.collection('users').doc(user.id).update({
+          let usr = {
             bio: user.bio,
             avatar: user.avatar,
             age: user.age,
@@ -106,7 +105,10 @@ export class UserService {
             technologies: user.technologies,
             goals: user.goals,
             frustrations: user.frustrations,
-          });
+          }
+          let usr2 = Object.fromEntries(Object.entries(usr).filter(([key, value]) => value !== null && value !== undefined && value !== ""));
+          console.log(usr2);
+          return this.firestore.collection('users').doc(user.id).update(usr2);
         } else {
           return Promise.reject('Document not found');
         }

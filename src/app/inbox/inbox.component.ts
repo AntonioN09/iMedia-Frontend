@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, concat, map, merge } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from '../../services/message/message.service';
 import { UserService } from '../../services/user/user.service';
@@ -20,7 +20,7 @@ export class InboxComponent implements OnInit {
   ngOnInit() {
     this.authService.getCurrentUserEmail().subscribe((currentUserEmail) => {
       if (currentUserEmail) {
-        this.messages = this.messageService.getReceivedMessagesByUserEmail(currentUserEmail);
+        this.messages = this.messageService.getChatMessagesByUserEmail('a@gmail.com', currentUserEmail);
       } else {
         console.log('User not authenticated');
       }

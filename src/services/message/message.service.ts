@@ -17,6 +17,17 @@ export class MessageService {
         .valueChanges({ idField: 'id' });
   }
 
+  getChatMessagesByUserEmail(senderEmail: string, receiverEmail: string): Observable<any[]> {
+    const emails = [senderEmail, receiverEmail];
+    return this.firestore
+      .collection<Message>('messages', ref =>
+        ref.where('senderEmail', 'in', emails)
+           .where('receiverEmail', 'in', emails)
+           .orderBy('createDate', 'desc')
+      )
+      .valueChanges({ idField: 'id' });
+  }
+
   getReceivedNotificationsByUserEmail(receiverEmail: string): Observable<any[]> {
     return this.firestore
       .collection<Notification>('notifications', (ref) => ref.where('receiverEmail', '==', receiverEmail).orderBy('createDate', 'desc'))
