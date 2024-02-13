@@ -8,7 +8,7 @@ export class MockAuthService {
       user: { email: 'test@example.com', uid: '123' }
     });
   }
-//ee
+  
   register(email: string, password: string) {
     return Promise.resolve({
       user: { email: 'test@example.com', uid: '123' }
