@@ -93,10 +93,6 @@ export class NavBarComponent {
     this.router.navigate(['/private/inbox']);
   }
 
-  message() {
-    this.router.navigate(['/private/message']);
-  }
-
   cv() {
     this.router.navigate(['/private/cv']);
   }

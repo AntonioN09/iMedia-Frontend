@@ -1,8 +1,14 @@
-<div *ngIf="!((messages | async)?.length); else content" class="container mx-auto">
+<div class="px-6 py-24 sm:py-32 lg:px-8 -mt-16">
+    <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Inbox</h2>
+    </div>
+</div>
+
+<div *ngIf="!((chats | async)?.length)" class="container mx-auto">
     <div class="bg-white">
         <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">It seems you haven't any message yet.</h2>
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">No Chats Available</h2>
                 <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">By following other users, you’ll begin
                     to see a stream of posts tailored to your interests, ideas, and aspirations.</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
@@ -15,54 +21,104 @@
             </div>
         </div>
     </div>
-
 </div>
 
-<ng-template #content>
-    <div *ngIf="messages" class="container mx-auto">
-
-        <div style="overflow-wrap: break-word" *ngFor="let message of messages | async">
-
-            <!-- Adjusted box styling here -->
-            <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
-                <div class="-mt-6 -mb-6">
-                    <div class="flex space-x-3">
-                        <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" [src]="message.userAvatar ? message.userAvatar : '../../assets/img/default.png'" alt="">
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-semibold text-gray-900">
-                                <a href="#" class="hover:underline">{{ message.senderEmail }}</a>
-                            </p>
-                            <p class="text-sm text-gray-500">
-                                <!-- <a href="#" class="hover:underline">{{ post.formattedDate }} </a> -->
-                                <a href="#" class="hover:underline">{{ message.createDate.toDate().toLocaleDateString() }}
-                                    {{message.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
-                                    minute:'2-digit'})}}
-                                </a>
-                            </p>
-                            <!-- Actual paragraph content -->
-                            <!-- <p class="mt-2 text-gray-800">
-                                {{ post.body }}
-                            </p> -->
-                            <!-- End actual paragraph content -->
-                        </div>
+<div class="container mx-auto -mt-20">
+    <div style="overflow-wrap: break-word" *ngFor="let chat of chats | async">
+        <!-- Adjusted box styling here -->
+        <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
+            <div class="-mt-6 -mb-6">
+                <div class="flex space-x-3">
+                    <div class="flex-shrink-0">
+                        <img class="h-10 w-10 rounded-full" [src]="chat?.avatar ? chat?.avatar : '../../assets/img/default.png'" alt="">
                     </div>
-                    <div>
-                        <p class="mt-4 text-gray-800 font-sans font-normal">
-                           Message subject: {{ message.subject }}
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-semibold text-gray-900">
+                            <a href="#" class="hover:underline">{{ currentUserEmail == chat.userEmail1 ? chat.userEmail2 : chat.userEmail1 }}</a>
+                            <!-- <button type="button"
+                                class="ml-4 rounded-md bg-indigo-50 px-2.5 py-1.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Follow</button> -->
+                            <!-- <button type="button" (click)="removeUser(user.id)"
+                                class="ml-2 rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Remove
+                            </button> -->
                         </p>
+
                     </div>
-                    <div>
-                        <p class="mt-4 text-gray-800 font-sans font-normal">
-                            {{ message.body }}
-                        </p>
+                    <div class="flex-shrink-0">
+                        <button (click)="setReceiverEmail(currentUserEmail == chat.userEmail1 ? chat.userEmail2 : chat.userEmail1, chat.id)"
+                                class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
+                            Chat
+                        </button>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="receiverEmail">
+    <app-message [receiverEmail]="receiverEmail"></app-message>
+    <div *ngIf="!((messages | async)?.length); else content" class="container mx-auto">
+        <div class="bg-white">
+            <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+                <div class="mx-auto max-w-2xl text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Write your first message to this user</h2>
+                    <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">By following other users, you’ll begin
+                        to see a stream of posts tailored to your interests, ideas, and aspirations.</p>
+                    <div class="mt-10 flex items-center justify-center gap-x-6">
+                        <a href="#"
+                            class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Go
+                            follow some accounts</a>
+                        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Visit Ranking page <span
+                                aria-hidden="true">→</span></a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-
-</ng-template>
+    <ng-template #content>
+        <div *ngIf="messages" class="container mx-auto">
+            <div style="overflow-wrap: break-word" *ngFor="let message of messages | async">
+                <!-- Adjusted box styling here -->
+                <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
+                    <div class="-mt-6 -mb-6">
+                        <div class="flex space-x-3">
+                            <div class="flex-shrink-0">
+                                <img class="h-10 w-10 rounded-full" [src]="message.userAvatar ? message.userAvatar : '../../assets/img/default.png'" alt="">
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-sm font-semibold text-gray-900">
+                                    <a href="#" class="hover:underline">{{ message.senderEmail }}</a>
+                                </p>
+                                <p class="text-sm text-gray-500">
+                                    <!-- <a href="#" class="hover:underline">{{ post.formattedDate }} </a> -->
+                                    <a href="#" class="hover:underline">{{ message.createDate.toDate().toLocaleDateString() }}
+                                        {{message.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                                        minute:'2-digit'})}}
+                                    </a>
+                                </p>
+                                <!-- Actual paragraph content -->
+                                <!-- <p class="mt-2 text-gray-800">
+                                    {{ post.body }}
+                                </p> -->
+                                <!-- End actual paragraph content -->
+                            </div>
+                        </div>
+                        <!-- <div>
+                            <p class="mt-4 text-gray-800 font-sans font-normal">
+                            Message subject: {{ message.subject }}
+                            </p>
+                        </div> -->
+                        <div>
+                            <p class="mt-4 text-gray-800 font-sans font-normal">
+                                {{ message.body }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

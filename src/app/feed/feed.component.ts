@@ -47,10 +47,4 @@ export class FeedComponent implements OnInit {
   redirectToComments(postId: string | undefined): void {
     this.router.navigate(['private/comments', postId]);
   }
-
-  displayAvatar(userId: string | null): Observable<string | undefined> {
-    return this.userService.getUserById(userId).pipe(
-      map((userData) => userData?.avatar)
-    );
-  }
 }

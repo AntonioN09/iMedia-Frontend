@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from '../../services/message/message.service';
 import { Message } from '../../models/message.model';
 import { UserService } from 'src/services/user/user.service';
 import { User } from 'src/models/user.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-message',
@@ -12,6 +13,7 @@ import { User } from 'src/models/user.model';
   styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
+  @Input() receiverEmail!: string;
   messageForm!: FormGroup;
   currentUserId!: string | null;
   currentUserEmail!: string | null;
@@ -20,10 +22,14 @@ export class MessageComponent implements OnInit {
   constructor(private fb: FormBuilder, 
               private authService: AuthService, 
               private messageService: MessageService, 
-              private userService: UserService) {
+              private userService: UserService,
+              private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.receiverEmail = params['receiverEmail'];
+    });
+    
     this.messageForm = this.fb.group({
-      emailTo: ['', Validators.required],
-      subject: ['', Validators.required],
+      // subject: ['', Validators.required],
       body: ['', Validators.required],
     });
   }
@@ -43,7 +49,6 @@ export class MessageComponent implements OnInit {
     });
   }
 
-  
   onSubmit(): void {
     if (this.messageForm.valid) {
       const userId = this.currentUserId;
@@ -51,12 +56,12 @@ export class MessageComponent implements OnInit {
       const userAvatar = this.userData?.avatar;
       if (userId) {
         const newMessage: Message = {
-          subject: this.messageForm.value.subject,
+          // subject: this.messageForm.value.subject,
           body: this.messageForm.value.body,
           userId: userId,
           userAvatar: userAvatar,
           senderEmail: userEmail,
-          receiverEmail: this.messageForm.value.emailTo,
+          receiverEmail: this.receiverEmail,
           createDate: new Date(),
         };
         console.log(newMessage);

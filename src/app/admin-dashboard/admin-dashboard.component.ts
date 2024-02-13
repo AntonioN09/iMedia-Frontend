@@ -3,6 +3,7 @@ import { AuthService } from 'src/services/auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/models/user.model';
 import { UserService } from 'src/services/user/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,7 +11,7 @@ import { UserService } from 'src/services/user/user.service';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-  users: User[] = [];
+  users!: Observable<any>;
   currentUserEmail!: string | null;
   userForm!: FormGroup;
   userId!: string | null;
@@ -28,9 +29,8 @@ export class AdminDashboardComponent implements OnInit {
     this.authService.getCurrentUserEmail().subscribe((userEmail) => {
       this.currentUserEmail = userEmail;
     });
-    this.userService.getUsersSortedByEmail().subscribe((users) => {
-      this.users = users;
-    });
+    
+    this.users =  this.userService.getUsersSortedByEmail();;
 
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.userId = userId;

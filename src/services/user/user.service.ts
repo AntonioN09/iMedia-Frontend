@@ -71,6 +71,21 @@ export class UserService {
       );
   }
 
+  getUserByEmail(userEmail: string | null): Observable<User | null> {
+    return this.firestore
+      .collection<User>('users', (ref) => ref.where('email', '==', userEmail))
+      .valueChanges()
+      .pipe(
+        map((users) => {
+          if (users.length > 0) {
+            return users[0];
+          } else {
+            return null;
+          }
+        })
+      );
+  }
+
   getUserByIdSync(userId: string | null): User | null {
     if (!userId) {
       return null;
@@ -107,7 +122,6 @@ export class UserService {
             frustrations: user.frustrations,
           }
           let usr2 = Object.fromEntries(Object.entries(usr).filter(([key, value]) => value !== null && value !== undefined && value !== ""));
-          console.log(usr2);
           return this.firestore.collection('users').doc(user.id).update(usr2);
         } else {
           return Promise.reject('Document not found');

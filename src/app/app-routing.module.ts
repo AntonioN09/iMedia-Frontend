@@ -83,11 +83,6 @@ const routes: Routes = [
         canActivate: [privateGuard]
       },
       {
-        path: 'message',
-        component: MessageComponent,
-        canActivate: [privateGuard]
-      },
-      {
         path: 'cv',
         component: CvComponent,
         canActivate: [privateGuard]

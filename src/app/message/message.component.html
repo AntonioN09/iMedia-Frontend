@@ -8,22 +8,14 @@
           Our service for instant messaging makes it easy for you to get in touch with anyone
         </p>
         <form [formGroup]="messageForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
-          <div class="rounded-md shadow-sm">
-            <div>
-                <label for="emailTo" class="sr-only">To</label>
-                <input id="emailTo" name="emailTo"
-                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Who should receive this message?" formControlName="emailTo">
-            </div>
-          </div>
-          <div class="rounded-md shadow-sm">
+          <!-- <div class="rounded-md shadow-sm">
             <div>
                 <label for="subject" class="sr-only">Subject</label>
                 <input id="subject" name="subject"
                 class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="What is your message about?" formControlName="subject">
             </div>
-          </div>
+          </div> -->
           <div class="rounded-md shadow-sm">
             <div>
               <label for="body" class="sr-only">Message Body</label>
@@ -44,4 +36,4 @@
         </form>
       </div>
     </div>
-  </div>
+</div>
