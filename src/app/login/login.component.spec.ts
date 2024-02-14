@@ -70,7 +70,7 @@ describe('Integration Test: LoginComponent and FeedComponent', () => {
   
       expect(loginComponent.authService.login).toHaveBeenCalled();
       expect(loginComponent.authService.isAuthenticated).toHaveBeenCalled();
-      expect(loginComponent.router.navigate).toHaveBeenCalledWith(['/private/profile']);
+      expect(loginComponent.router.navigate).toHaveBeenCalledWith(['/private/feed']);
     });
   
     it('should get posts and user data in FeedComponent', () => {
