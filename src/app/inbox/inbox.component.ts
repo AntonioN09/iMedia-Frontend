@@ -6,6 +6,7 @@ import { User } from 'src/models/user.model';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/services/message/message.service';
 import { Chat } from 'src/models/chat.model';
+import { Message } from 'src/models/message.model';
 
 @Component({
   selector: 'app-inbox',
@@ -22,12 +23,14 @@ export class InboxComponent implements OnInit {
   currentChat!: Chat;
   currentLastSeen!: Date | undefined;
   messages!: Observable<any[]>;
+  barrierDisplayed!: boolean;
 
   constructor(public authService: AuthService, 
               public userService: UserService,
               public messageService: MessageService,
               public router: Router) {
     this.currentLastSeen = new Date();
+    this.barrierDisplayed = false;
   }
 
   ngOnInit() {
@@ -64,8 +67,13 @@ export class InboxComponent implements OnInit {
   setReceiverEmail(receiverEmail: string, chat: Chat): void {
     this.receiverEmailSubject.next(receiverEmail);
     this.currentChat = chat;
+    this.barrierDisplayed = false;
     this.currentLastSeen = receiverEmail == chat.userEmail1 ? chat.lastSeen2 : chat.lastSeen1;
     this.messageService.updateSeenStatusOfMessages(receiverEmail, chat.id).subscribe();
     this.messageService.updateChat(chat, receiverEmail, this.userData?.avatar).subscribe();
+  }
+
+  shouldDisplayBarrier(message: Message): boolean {
+    return message.createDate > this.currentLastSeen! && this.currentUserEmail !== message.senderEmail;
   }
 }
