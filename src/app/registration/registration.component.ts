@@ -32,7 +32,7 @@ export class RegistrationComponent {
     this.authService.register(email, password);
     this.authService.isAuthenticated().subscribe((isAuthenticated) => {
       if (isAuthenticated) {
-        this.router.navigate(['/private/profile']);
+        this.router.navigate(['/private/feed']);
       }
     });
   }

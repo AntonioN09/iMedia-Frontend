@@ -5,6 +5,7 @@ import { UserService } from '../../services/user/user.service';
 import { User } from 'src/models/user.model';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/services/message/message.service';
+import { Chat } from 'src/models/chat.model';
 
 @Component({
   selector: 'app-inbox',
@@ -56,8 +57,8 @@ export class InboxComponent implements OnInit {
     });
   }
 
-  setReceiverEmail(receiverEmail: string, chatId: string): void {
+  setReceiverEmail(receiverEmail: string, chat: Chat): void {
     this.receiverEmailSubject.next(receiverEmail);
-    this.messageService.updateLatestMessage(chatId).subscribe();
+    this.messageService.updateChat(chat, receiverEmail, this.userData?.avatar).subscribe();
   }
 }

@@ -38,9 +38,9 @@
                     </div>
                 </div>
                 <div *ngIf="!user.editing">
-                    <p class="mt-4 text-gray-800 font-sans font-normal">
+                    <!-- <p class="mt-4 text-gray-800 font-sans font-normal">
                         {{ user.bio }}
-                    </p>
+                    </p> -->
                     <div class="flex justify-between items-center mt-4">
                         <div class="flex items-center">
                             <button *ngIf="!user.isAdmin" (click)="setAdmin(user)"
@@ -54,11 +54,11 @@
                             <div style="margin: 10px"></div>
                             <button *ngIf="!user.isMod" (click)="setMod(user)"
                                 class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
-                                Set Moderator
+                                Set Mod
                             </button>
                             <button *ngIf="user.isMod" (click)="setMod(user)"
                                 class=" bg-indigo-500 py-2 px-4 rounded text-white hover:text-indigo-900">
-                                Unset Moderator
+                                Unset Mod
                             </button>
                             <!-- <button (click)="toggleLike(post.id)" class="flex items-center ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"

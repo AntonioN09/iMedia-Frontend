@@ -47,4 +47,8 @@ export class FeedComponent implements OnInit {
   redirectToComments(postId: string | undefined): void {
     this.router.navigate(['private/comments', postId]);
   }
+
+  redirectToProfile(userId: string | undefined): void {
+    this.router.navigate(['private/profile', userId]);
+  }
 }

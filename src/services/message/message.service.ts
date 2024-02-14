@@ -59,11 +59,15 @@ export class MessageService {
       .valueChanges({ idField: 'id' });
   }
 
-  updateLatestMessage(chatId: string): Observable<void> {
-    return this.firestore.collection('chats').doc(chatId).get().pipe(
+  updateChat(chat: Chat, receiverEmail: string, userAvatar: string | undefined): Observable<void> {
+    let userAvatar1 = receiverEmail == chat.userEmail1 ? userAvatar : chat.userAvatar1;
+    let userAvatar2 = receiverEmail == chat.userEmail2 ? userAvatar : chat.userAvatar2;
+    return this.firestore.collection('chats').doc(chat.id).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
-          return this.firestore.collection('chats').doc(chatId).update({
+          return this.firestore.collection('chats').doc(chat.id).update({
+            userAvatar1: userAvatar1,
+            userAvatar2: userAvatar2,
             latestMessage: new Date()
           });
         } else {

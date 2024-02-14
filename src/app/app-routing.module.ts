@@ -43,7 +43,7 @@ const routes: Routes = [
     path: 'private',
     children: [
       {
-        path: 'profile',
+        path: 'profile/:userId',
         component: ProfileComponent,
         canActivate: [privateGuard]
       }, 

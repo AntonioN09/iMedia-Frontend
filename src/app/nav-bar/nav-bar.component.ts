@@ -66,7 +66,7 @@ export class NavBarComponent {
   }
 
   profile() {
-    this.router.navigate(['/private/profile']);
+    this.router.navigate(['/private/profile', this.currentUserId]);
   }
 
   post() {

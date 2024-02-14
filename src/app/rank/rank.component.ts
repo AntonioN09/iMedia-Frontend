@@ -79,6 +79,10 @@ export class RankComponent implements OnInit {
     this.router.navigate(['private/comments', postId]);
   }
 
+  redirectToProfile(userId: string | undefined): void {
+    this.router.navigate(['private/profile', userId]);
+  }
+
   followUser(following: string | null | undefined): void {
     this.userService.followUser(this.currentUserEmail, following ? following : "")
       .then(() => {

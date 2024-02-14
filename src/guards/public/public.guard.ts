@@ -12,7 +12,7 @@ export const publicGuard: CanActivateFn = (route, state) => {
       if (!isAuthenticated) {
         return true;
       } else {
-        router.navigate(['/private/profile']);
+        router.navigate(['/private/feed']);
         return false;
       }
     })
