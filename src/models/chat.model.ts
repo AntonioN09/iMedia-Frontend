@@ -6,4 +6,8 @@ export interface Chat {
     userAvatar2?: string;
     userEmails: (string | null)[];
     latestMessage?: Date;
+    unseenMessages1?: number;
+    unseenMessages2?: number;
+    lastSeen1?: Date;
+    lastSeen2?: Date;
 }

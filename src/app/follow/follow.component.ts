@@ -59,7 +59,11 @@ export class FollowComponent implements OnInit {
                         userEmails: [this.userEmail, this.searchEmail],
                         userAvatar1: this.userData?.avatar,
                         userAvatar2: userData.avatar ? userData.avatar : '../../assets/img/default.png',
-                        latestMessage: new Date()
+                        latestMessage: new Date(),
+                        unseenMessages1: 0,
+                        unseenMessages2: 0, 
+                        lastSeen1: new Date(),
+                        lastSeen2: new Date()
                       };
                       this.messageService.createChat(chat);
                       console.log(`Successfully followed user with email: ${this.searchEmail}`);

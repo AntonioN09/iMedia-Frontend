@@ -7,4 +7,6 @@ export interface Message {
     senderEmail?: string | null;
     receiverEmail?: string | null;
     createDate: Date;
+    chatId: string | undefined;
+    seenStatus?: boolean;
 }

@@ -30,7 +30,7 @@
             <div class="-mt-6 -mb-6">
                 <div class="flex space-x-3">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" [src]="chat?.avatar ? chat?.avatar : '../../assets/img/default.png'" alt="">
+                        <img class="h-10 w-10 rounded-full" [src]="currentUserEmail == chat.userEmail1 ? chat.userAvatar1 : chat.userAvatar2" alt="">
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900">
@@ -50,7 +50,10 @@
                         </button>
                     </div>
                 </div>
-                <div>
+                <div >
+                    <p class="mt-4 text-gray-800 font-sans font-normal">
+                        Number of unseen messages: {{ currentUserEmail == chat.userEmail1 ? chat.unseenMessages1 : chat.unseenMessages2 }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -58,7 +61,7 @@
 </div>
 
 <div *ngIf="receiverEmail">
-    <app-message [receiverEmail]="receiverEmail"></app-message>
+    <app-message [receiverEmail]="receiverEmail" [chat]="currentChat"></app-message>
     <div *ngIf="!((messages | async)?.length); else content" class="container mx-auto">
         <div class="bg-white">
             <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -80,8 +83,14 @@
 
     <ng-template #content>
         <div *ngIf="messages" class="container mx-auto">
-            <div style="overflow-wrap: break-word" *ngFor="let message of messages | async">
-                <!-- Adjusted box styling here -->
+            <div *ngFor="let message of messages | async; let isFirst = first">
+                <!-- Display barrier if it's the first message after currentLastSeen -->
+                <div *ngIf="isFirst && message.createDate < currentLastSeen! && currentUserEmail != message.senderEmail">
+                    <hr>
+                    <p class="flex justify-center">New messages</p>
+                    <hr>
+                </div>
+                <!-- Display message -->
                 <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
                     <div class="-mt-6 -mb-6">
                         <div class="flex space-x-3">
@@ -93,24 +102,13 @@
                                     <a href="#" class="hover:underline">{{ message.senderEmail }}</a>
                                 </p>
                                 <p class="text-sm text-gray-500">
-                                    <!-- <a href="#" class="hover:underline">{{ post.formattedDate }} </a> -->
                                     <a href="#" class="hover:underline">{{ message.createDate.toDate().toLocaleDateString() }}
                                         {{message.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
                                         minute:'2-digit'})}}
                                     </a>
                                 </p>
-                                <!-- Actual paragraph content -->
-                                <!-- <p class="mt-2 text-gray-800">
-                                    {{ post.body }}
-                                </p> -->
-                                <!-- End actual paragraph content -->
                             </div>
                         </div>
-                        <!-- <div>
-                            <p class="mt-4 text-gray-800 font-sans font-normal">
-                            Message subject: {{ message.subject }}
-                            </p>
-                        </div> -->
                         <div>
                             <p class="mt-4 text-gray-800 font-sans font-normal">
                                 {{ message.body }}
@@ -120,5 +118,5 @@
                 </div>
             </div>
         </div>
-    </ng-template>
+    </ng-template>    
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, catchError, map, switchMap, throwError } from 'rxjs';
 import { Chat } from 'src/models/chat.model';
 import { Message } from 'src/models/message.model';
 import { Notification } from 'src/models/notification.model';
@@ -62,18 +62,72 @@ export class MessageService {
   updateChat(chat: Chat, receiverEmail: string, userAvatar: string | undefined): Observable<void> {
     let userAvatar1 = receiverEmail == chat.userEmail1 ? userAvatar : chat.userAvatar1;
     let userAvatar2 = receiverEmail == chat.userEmail2 ? userAvatar : chat.userAvatar2;
+    let unseenMessages1 = receiverEmail == chat.userEmail1 ? chat.unseenMessages1 : 0;
+    let unseenMessages2 = receiverEmail == chat.userEmail2 ? chat.unseenMessages2 : 0;
+    let lastSeen1 = receiverEmail == chat.userEmail1 ? chat.lastSeen1 : new Date();
+    let lastSeen2 = receiverEmail == chat.userEmail2 ? chat.lastSeen2 : new Date();
     return this.firestore.collection('chats').doc(chat.id).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
           return this.firestore.collection('chats').doc(chat.id).update({
             userAvatar1: userAvatar1,
             userAvatar2: userAvatar2,
-            latestMessage: new Date()
+            unseenMessages1: unseenMessages1,
+            unseenMessages2: unseenMessages2,
+            lastSeen1: lastSeen1,
+            lastSeen2: lastSeen2
           });
         } else {
           return Promise.reject('Document not found');
         }
       })
     );
+  }
+
+  incrementNumberOfUnseenMessages(chat: Chat, receiverEmail: string | undefined): Observable<void> {
+    let unseenMessages1 = chat.unseenMessages1 ? chat.unseenMessages1 : 0;
+    let unseenMessages2 = chat.unseenMessages2 ? chat.unseenMessages2 : 0;
+    if(chat.userEmail1 == receiverEmail){
+      unseenMessages1 = unseenMessages1 + 1;
+    }
+    else if(chat.userEmail2 == receiverEmail){
+      unseenMessages2 = unseenMessages2 + 1;
+    }
+    return this.firestore.collection('chats').doc(chat.id).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          return this.firestore.collection('chats').doc(chat.id).update({
+            latestMessage: new Date(),
+            unseenMessages1: unseenMessages1,
+            unseenMessages2: unseenMessages2
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
+  }
+
+  updateSeenStatusOfMessages(receiverEmail: string | undefined, chatId: string | undefined): Observable<void> {
+    if (!receiverEmail || !chatId) {
+      return throwError('Invalid receiverEmail or chatId');
+    }
+
+    return this.firestore.collection('messages', ref => ref.where('senderEmail', '==', receiverEmail).where('chatId', '==', chatId))
+      .get()
+      .pipe(
+        switchMap(snapshot => {
+          const batch = this.firestore.firestore.batch();
+          snapshot.docs.forEach(doc => {
+            const messageRef = this.firestore.collection('messages').doc(doc.id).ref;
+            batch.update(messageRef, { seenStatus: true });
+          });
+          return batch.commit();
+        }),
+        catchError(error => {
+          console.error('Error updating seenStatus:', error);
+          return throwError('Error updating seenStatus');
+        })
+      );
   }
 }

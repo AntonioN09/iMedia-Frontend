@@ -19,12 +19,16 @@ export class InboxComponent implements OnInit {
   userData!: User | null;
   receiverEmail!: string;
   receiverEmailSubject: Subject<string> = new Subject<string>();
+  currentChat!: Chat;
+  currentLastSeen!: Date | undefined;
   messages!: Observable<any[]>;
 
   constructor(public authService: AuthService, 
               public userService: UserService,
               public messageService: MessageService,
-              public router: Router) {}
+              public router: Router) {
+    this.currentLastSeen = new Date();
+  }
 
   ngOnInit() {
     this.authService.getCurrentUserId().subscribe((userId) => {
@@ -59,6 +63,9 @@ export class InboxComponent implements OnInit {
 
   setReceiverEmail(receiverEmail: string, chat: Chat): void {
     this.receiverEmailSubject.next(receiverEmail);
+    this.currentChat = chat;
+    this.currentLastSeen = receiverEmail == chat.userEmail1 ? chat.lastSeen2 : chat.lastSeen1;
+    this.messageService.updateSeenStatusOfMessages(receiverEmail, chat.id).subscribe();
     this.messageService.updateChat(chat, receiverEmail, this.userData?.avatar).subscribe();
   }
 }

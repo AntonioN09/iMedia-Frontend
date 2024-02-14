@@ -6,6 +6,7 @@ import { Message } from '../../models/message.model';
 import { UserService } from 'src/services/user/user.service';
 import { User } from 'src/models/user.model';
 import { ActivatedRoute } from '@angular/router';
+import { Chat } from 'src/models/chat.model';
 
 @Component({
   selector: 'app-message',
@@ -14,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MessageComponent implements OnInit {
   @Input() receiverEmail!: string;
+  @Input() chat!: Chat;
   messageForm!: FormGroup;
   currentUserId!: string | null;
   currentUserEmail!: string | null;
@@ -26,6 +28,7 @@ export class MessageComponent implements OnInit {
               private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
       this.receiverEmail = params['receiverEmail'];
+      this.chat = params['chat'];
     });
     
     this.messageForm = this.fb.group({
@@ -63,9 +66,12 @@ export class MessageComponent implements OnInit {
           senderEmail: userEmail,
           receiverEmail: this.receiverEmail,
           createDate: new Date(),
+          chatId: this.chat.id,
+          seenStatus: false
         };
         console.log(newMessage);
         this.messageService.addMessage(newMessage).then(() => {
+          this.messageService.incrementNumberOfUnseenMessages(this.chat, this.receiverEmail).subscribe();
           this.messageForm.reset();
         });
       }
