@@ -20,6 +20,7 @@ export class CommentComponent {
   currentUserEmail!: string | null;
   userData!: User | null;
   comments!: Observable<any[]>;
+  displayCount: number = 3;
 
   constructor(private route: ActivatedRoute, 
               private fb: FormBuilder, 
@@ -80,5 +81,9 @@ export class CommentComponent {
 
   toggleLike(commentId: string | undefined): void {
     this.commentService.likeComment(commentId).subscribe();
+  }
+
+  showMore(): void {
+    this.displayCount = this.displayCount + 3;
   }
 }

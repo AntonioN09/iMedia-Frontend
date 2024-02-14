@@ -56,10 +56,7 @@
 
 <ng-template #content>
     <div *ngIf="comments" class="container mx-auto">
-
-        <div style="overflow-wrap: break-word" *ngFor="let comment of comments | async">
-
-            <!-- Adjusted box styling here -->
+        <div style="overflow-wrap: break-word" *ngFor="let comment of (comments | async)!.slice(0, displayCount)">
             <div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
                 <div class="-mt-6 -mb-6">
                     <div class="flex space-x-3">
@@ -120,6 +117,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div *ngIf="((comments | async)!.length) > displayCount" class="flex justify-center">
+            <button (click)="showMore()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto">
+                Show more
+            </button>
         </div>
     </div>
 </ng-template>
