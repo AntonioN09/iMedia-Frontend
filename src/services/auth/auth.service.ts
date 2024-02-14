@@ -38,7 +38,8 @@ export class AuthService {
               email: email,
               avatar: "../../assets/img/default.png",
               isAdmin: false,
-              isMod: false
+              isMod: false,
+              unseenNotifications: 0
           };
           this.firestore.collection('users').doc(userId).set(newUser);
           const newCv: CV = {

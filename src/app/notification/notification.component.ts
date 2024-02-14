@@ -32,6 +32,8 @@ export class NotificationComponent implements OnInit {
         this.userService.getUserById(this.userId).subscribe((userData) => {
           this.userData = userData;
         });
+
+        this.userService.resetUnseenNotifications(this.userId).subscribe();
       }
     });
   }

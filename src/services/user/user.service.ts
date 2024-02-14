@@ -131,6 +131,8 @@ export class UserService {
   }
 
   notifyUser(user: User | null, message: string, receiverEmail: string): Promise<void> {
+    this.incrementUnseenNotifications(user).subscribe();
+    
     const notification: Notification = {
       body: message,
       userId: user?.id,
@@ -141,6 +143,36 @@ export class UserService {
     }
 
     return this.firestore.collection('notifications').add(notification).then();
+  }
+
+  incrementUnseenNotifications(user: User | null): Observable<any> {
+    return this.firestore.collection('users').doc(user?.id).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          const current = (doc.data() as User)?.unseenNotifications || 0;
+          const updated = current + 1;
+          return this.firestore.collection('users').doc(user?.id).update({
+            unseenNotifications: updated,
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
+  }
+
+  resetUnseenNotifications(userId: string | null): Observable<any> {
+    return this.firestore.collection('users').doc(userId!).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          return this.firestore.collection('users').doc(userId!).update({
+            unseenNotifications: 0,
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
   }
 
   removeUser(userId: string): Observable<void> {
@@ -233,7 +265,7 @@ export class UserService {
       );
   }
 
-  updateCv(cv: CV): Observable<void>{
+  updateCv(cv: CV): Observable<void> {
     console.log(cv.id);
     return this.firestore.collection('cvs').doc(cv.id).get().pipe(
       switchMap((doc) => {

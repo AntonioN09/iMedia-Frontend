@@ -12,4 +12,5 @@ export interface User {
     editing?: boolean,
     isAdmin?: boolean,
     isMod?: boolean,
+    unseenNotifications?: number
 }

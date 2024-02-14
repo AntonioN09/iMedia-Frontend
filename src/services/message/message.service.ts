@@ -85,21 +85,30 @@ export class MessageService {
   }
 
   incrementNumberOfUnseenMessages(chat: Chat, receiverEmail: string | undefined): Observable<void> {
-    let unseenMessages1 = chat.unseenMessages1 ? chat.unseenMessages1 : 0;
-    let unseenMessages2 = chat.unseenMessages2 ? chat.unseenMessages2 : 0;
     if(chat.userEmail1 == receiverEmail){
-      unseenMessages1 = unseenMessages1 + 1;
-    }
-    else if(chat.userEmail2 == receiverEmail){
-      unseenMessages2 = unseenMessages2 + 1;
+      return this.firestore.collection('chats').doc(chat.id).get().pipe(
+        switchMap((doc) => {
+          if (doc.exists) {
+            const current1 = (doc.data() as Chat)?.unseenMessages1 || 0;
+            const updated1 = current1 + 1;
+            return this.firestore.collection('chats').doc(chat.id).update({
+              latestMessage: new Date(),
+              unseenMessages1: updated1,
+            });
+          } else {
+            return Promise.reject('Document not found');
+          }
+        })
+      );
     }
     return this.firestore.collection('chats').doc(chat.id).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
+          let current2 = (doc.data() as Chat)?.unseenMessages2 || 0;
+          const updated2 = current2 + 1;
           return this.firestore.collection('chats').doc(chat.id).update({
             latestMessage: new Date(),
-            unseenMessages1: unseenMessages1,
-            unseenMessages2: unseenMessages2
+            unseenMessages2: updated2
           });
         } else {
           return Promise.reject('Document not found');
