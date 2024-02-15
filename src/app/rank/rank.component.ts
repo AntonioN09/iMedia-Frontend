@@ -79,7 +79,7 @@ export class RankComponent implements OnInit {
   }
   
   toggleLike(postId: string | undefined): void {
-    this.postService.likePost(postId).subscribe();
+    this.postService.likePost(this.userId!, postId).subscribe();
   }
 
   redirectToComments(postId: string | undefined): void {

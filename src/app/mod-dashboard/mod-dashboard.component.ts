@@ -74,7 +74,7 @@ export class ModDashboardComponent implements OnInit {
   
   
   toggleLike(postId: string | undefined): void {
-    this.postService.likePost(postId).subscribe();
+    this.postService.likePost(this.userId!, postId).subscribe();
   }
 
   followUser(following: string | null | undefined): void {

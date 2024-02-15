@@ -85,7 +85,7 @@ export class CommentComponent {
   }
 
   toggleLike(commentId: string | undefined): void {
-    this.commentService.likeComment(commentId).subscribe();
+    this.commentService.likeComment(this.currentUserId!, commentId).subscribe();
   }
 
   showMore(): void {

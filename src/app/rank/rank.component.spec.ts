@@ -52,10 +52,7 @@ describe('Integration Test: PostComponent and RankComponent', () => {
         
         const post = {
             body: 'test post',
-            
-            
-            
-            
+            category: 'Idea'  
         };
 
         postComponent.postForm.setValue(post);

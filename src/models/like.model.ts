@@ -1,5 +1,4 @@
-export interface UserLike {
-    userId: string;
-    postId: string;
-    liked: boolean;
+export interface Like {
+    userId?: string;
+    postId?: string;
 }
