@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { Post } from '../../models/post.model';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +11,19 @@ import { switchMap } from 'rxjs/operators';
 export class PostService {
   
   constructor(private firestore: AngularFirestore, private userService: UserService) {}
+
+  getPostById(postId: string | null): Observable<Post | null> {
+    return this.firestore
+      .collection<Post>('posts').doc(postId!).valueChanges().pipe(
+        map((post) => {
+          if (post) {
+            return post;
+          } else {
+            return null;
+          }
+        })
+      );
+  }
 
   getPosts(): Observable<Post[]> {
     return this.firestore
