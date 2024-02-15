@@ -3,11 +3,11 @@ import { User } from 'src/models/user.model';
 import { Follow } from 'src/models/follow.model';
 import { Notification } from 'src/models/notification.model';
 import { CV } from 'src/models/cv.model';
-
+import { Timestamp } from '@firebase/firestore';
 export class MockUserService {
   // Simulated users data
   private mockUsers: User[] = [
-    { id: '1', email: 'user1@example.com', /* other properties */ },
+    { id: '1', email: 'test@example.com',},
     { id: '2', email: 'user2@example.com', /* other properties */ },
     // ... more users
   ];

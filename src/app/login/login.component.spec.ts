@@ -15,7 +15,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { environment } from "src/environments/environment";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { AngularFireModule } from "@angular/fire/compat";
 
@@ -34,7 +33,6 @@ describe('Integration Test: LoginComponent and FeedComponent', () => {
             AngularFireModule.initializeApp(environment.firebase),
             ReactiveFormsModule,
             BrowserAnimationsModule,
-            MatSlideToggleModule,
             MatCardModule,
             MatButtonModule,
             MatFormFieldModule

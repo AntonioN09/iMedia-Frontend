@@ -36,7 +36,9 @@ export class RankComponent implements OnInit {
     });
     
     this.posts = this.postService.getPostsSortedByLikes();
-
+    console.log(this.posts.subscribe((posts) => {
+      console.log(posts.length);
+    }));
     this.authService.getCurrentUserId().subscribe((userId) => {
       this.userId = userId;
       if (this.userId) {
