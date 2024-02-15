@@ -36,7 +36,7 @@ jobs:
     - name: Deploy to GitHub Pages
       run: |
         if [ -z "${INNOVATION_MEDIA_TOKEN}" ]; then
-          echo "Set the GITHUB_TOKEN secret in your repository for deployment."
+          echo "Set the INNOVATION_MEDIA_TOKEN secret in your repository for deployment."
           exit 1
         fi
         npx ngh --dir=dist/innovation-media
