@@ -61,7 +61,7 @@
                 <div class="-mt-6 -mb-6">
                     <div class="flex space-x-3">
                         <div (click)="redirectToProfile(post.userId)" class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" [src]="post.userAvatar ? post.userAvatar : '../../assets/img/default.png'" alt="">
+                            <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + post.userAvatar ? post.userAvatar : 'default.png'" alt="">
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-sm font-semibold text-gray-900">

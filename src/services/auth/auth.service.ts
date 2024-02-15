@@ -36,7 +36,7 @@ export class AuthService {
               goals: [],
               frustrations: [],
               email: email,
-              avatar: "../../assets/img/default.png",
+              avatar: "default.png",
               isAdmin: false,
               isMod: false,
               unseenNotifications: 0,
