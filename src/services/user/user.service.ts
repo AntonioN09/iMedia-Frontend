@@ -179,7 +179,7 @@ export class UserService {
     return from(this.firestore.doc(`users/${userId}`).delete()).pipe(
       catchError(error => {
         console.error('Error deleting user:', error);
-        throw error; // Rethrow the error to handle it in the caller
+        throw error;
       })
     );
   }
