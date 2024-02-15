@@ -3,6 +3,10 @@ import { Post } from 'src/models/post.model';
 import { Timestamp } from '@firebase/firestore';
 
 export class MockPostService {
+  posts: Post[] = [
+    { id: '1', body: 'Test post',
+      userId: '123', likes: 3 }
+  ];
   getPosts() {
     return of([{ id: '1', content: 'Test post' }]);
   }
@@ -12,11 +16,11 @@ export class MockPostService {
   }
 
   getPostsSortedByLikes() {
-    return of([{ id: '1', content: 'Test post', likes: 10 }]);
+    return of(this.posts);
   }
 
   getPostsSortedByTime() {
-    return of([{ id: '1', content: 'Test post', createDate: new Date() }]);
+    return of(this.posts);
   }
 
   getPostsByUserEmail(userEmail: string) {
@@ -27,7 +31,10 @@ export class MockPostService {
     return of(null);
   }
 
-  addPost(post: Post) {
+  addPost(post: Post) : Promise<void> {
+    this.posts.push({ id: '1', body: 'Test post',
+    userId: '123', likes: 3 });
+    
     return Promise.resolve();
   }
 

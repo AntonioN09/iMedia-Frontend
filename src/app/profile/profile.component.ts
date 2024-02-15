@@ -16,9 +16,9 @@ export class ProfileComponent implements OnInit {
   username: string | null = null;
   userData: User | null = null;
   posts!: Observable<any>;
-  constructor(private postService: PostService, 
-              private userService: UserService,
-              private route: ActivatedRoute) {
+  constructor(public postService: PostService, 
+    public userService: UserService,
+    public route: ActivatedRoute) {
     this.route.params.subscribe(params => {
       this.userId = params['userId'];
     });

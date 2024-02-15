@@ -6,7 +6,7 @@ export interface Post {
     userId?: string;
     userAvatar?: string;
     userEmail?: string | null;
-    createDate: Date;
+    createDate?: Date;
     numComments?: Number;
     editing?: boolean;
 }
