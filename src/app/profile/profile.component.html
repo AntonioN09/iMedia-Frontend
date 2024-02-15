@@ -68,7 +68,7 @@
             </div>
             <div class="border-t border-gray-200 pt-4">
                 <dt class="font-medium text-gray-900">Avatar</dt>
-                <dd class="w-12 h-12 mt-2 text-sm text-gray-500"><img [src]='userData?.avatar' alt=""></dd>
+                <dd class="w-12 h-12 mt-2 text-sm text-gray-500"><img [src]="'assets/img/' + (userData?.avatar ? userData?.avatar : 'default.png')" alt=""></dd>
             </div>
             <div class="border-t border-gray-200 pt-4">
                 <dt class="font-medium text-gray-900">Email</dt>
@@ -115,7 +115,7 @@
             <div class="-mt-6 -mb-6">
                 <div class="flex space-x-3">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + post.userAvatar ? post.userAvatar : 'default.png'" alt="">
+                        <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + (post.userAvatar ? post.userAvatar : 'default.png')" alt="">
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900">
