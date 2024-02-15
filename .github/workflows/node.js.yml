@@ -31,7 +31,7 @@ jobs:
       run: npm test
 
     - name: Build Angular application
-      run: npm run build --if-present
+      run: ng build --output-path docs --base-href /innovation-media/
 
     - name: Deploy to GitHub Pages
       run: npx ngh --dir=dist/innovation-media
