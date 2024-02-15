@@ -7,6 +7,7 @@ import { UserService } from 'src/services/user/user.service';
 import { User } from 'src/models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { Chat } from 'src/models/chat.model';
+import { of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-message',
@@ -71,7 +72,16 @@ export class MessageComponent implements OnInit {
         };
         console.log(newMessage);
         this.messageService.addMessage(newMessage).then(() => {
-          this.messageService.incrementNumberOfUnseenMessages(this.chat, this.receiverEmail).subscribe();
+          this.messageService.incrementNumberOfUnseenMessages(this.chat, this.receiverEmail).subscribe();  
+          this.userService.getUserByEmail(newMessage.receiverEmail!).pipe(take(1),
+            switchMap((user: User | null) => {
+              if (user) {
+                return this.messageService.incrementUnseenMessagesOfUser(user);
+              } else {
+                return of(null); // Returning null if user is not found
+              }
+            })
+          ).subscribe();
           this.messageForm.reset();
         });
       }

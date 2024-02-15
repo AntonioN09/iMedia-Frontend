@@ -4,6 +4,7 @@ import { Observable, catchError, map, switchMap, throwError } from 'rxjs';
 import { Chat } from 'src/models/chat.model';
 import { Message } from 'src/models/message.model';
 import { Notification } from 'src/models/notification.model';
+import { User } from 'src/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,38 @@ export class MessageService {
     return this.firestore.collection('messages').add(message).then();
   }
 
+  incrementUnseenMessagesOfUser(user: User | null): Promise<void> {
+    if (!user || !user.id) {
+      return Promise.reject('Invalid user');
+    }
+    
+    return this.firestore.collection('users').doc(user.id).get().toPromise()
+      .then((doc) => {
+        if (doc?.exists) {
+          const current = (doc.data() as User)?.unseenMessages || 0;
+          const updated = current + 1;
+          return this.firestore.collection('users').doc(user.id).update({
+            unseenMessages: updated,
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      });
+  }
+
+  resetUnseenMessagesOfUser(userId: string | null): Promise<any> {
+    return this.firestore.collection('users').doc(userId!).get().toPromise()
+      .then((doc) => {
+        if (doc?.exists) {
+          return this.firestore.collection('users').doc(userId!).update({
+            unseenMessages: 0,
+          });
+        } else {
+          return Promise.reject('Document not found');
+        }
+      });
+  }
+
   createChat(chat: Chat): Promise<void> {
     return this.firestore.collection('chats').add(chat).then();
   }
@@ -60,12 +93,12 @@ export class MessageService {
   }
 
   updateChat(chat: Chat, receiverEmail: string, userAvatar: string | undefined): Observable<void> {
-    let userAvatar1 = receiverEmail == chat.userEmail1 ? userAvatar : chat.userAvatar1;
-    let userAvatar2 = receiverEmail == chat.userEmail2 ? userAvatar : chat.userAvatar2;
-    let unseenMessages1 = receiverEmail == chat.userEmail1 ? chat.unseenMessages1 : 0;
-    let unseenMessages2 = receiverEmail == chat.userEmail2 ? chat.unseenMessages2 : 0;
-    let lastSeen1 = receiverEmail == chat.userEmail1 ? chat.lastSeen1 : new Date();
-    let lastSeen2 = receiverEmail == chat.userEmail2 ? chat.lastSeen2 : new Date();
+    const userAvatar1 = receiverEmail == chat.userEmail1 ? userAvatar : chat.userAvatar1;
+    const userAvatar2 = receiverEmail == chat.userEmail2 ? userAvatar : chat.userAvatar2;
+    const unseenMessages1 = receiverEmail == chat.userEmail1 ? chat.unseenMessages1 : 0;
+    const unseenMessages2 = receiverEmail == chat.userEmail2 ? chat.unseenMessages2 : 0;
+    const lastSeen1 = receiverEmail == chat.userEmail1 ? chat.lastSeen1 : new Date();
+    const lastSeen2 = receiverEmail == chat.userEmail2 ? chat.lastSeen2 : new Date();
     return this.firestore.collection('chats').doc(chat.id).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
@@ -104,7 +137,7 @@ export class MessageService {
     return this.firestore.collection('chats').doc(chat.id).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
-          let current2 = (doc.data() as Chat)?.unseenMessages2 || 0;
+          const current2 = (doc.data() as Chat)?.unseenMessages2 || 0;
           const updated2 = current2 + 1;
           return this.firestore.collection('chats').doc(chat.id).update({
             latestMessage: new Date(),
