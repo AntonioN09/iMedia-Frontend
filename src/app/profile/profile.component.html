@@ -125,6 +125,9 @@
                             <!-- <button type="button" (click)="followUser(post.userEmail)"
                                 class="ml-2 rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Follow
                             </button> -->
+                            <span *ngIf="post.category" class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 mx-2 my-2">
+                                {{ post.category }}
+                            </span>
                         </p>
                         <p class="text-sm text-gray-500">
                             <a href="#" class="hover:underline">{{ post?.createDate?.toDate().toLocaleDateString() }}

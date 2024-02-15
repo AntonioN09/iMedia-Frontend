@@ -23,6 +23,7 @@ export class PostComponent implements OnInit {
               private userService: UserService) {
     this.postForm = this.fb.group({
       body: ['', Validators.required],
+      category: ['', Validators.required]
     });
   }
 
@@ -55,7 +56,8 @@ export class PostComponent implements OnInit {
           userAvatar: userAvatar,
           userEmail: userEmail,
           createDate: new Date(),
-          numComments: 0
+          numComments: 0,
+          category: this.postForm.value.category
         };
 
         this.postService.addPost(newPost).then(() => {

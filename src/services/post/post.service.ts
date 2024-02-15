@@ -97,4 +97,22 @@ export class PostService {
       })
     );
   }
+
+  getFilteredPostsByUserEmail(userEmail:string, category: string): Observable<any[]> {
+    return this.userService.getFollowedUserEmails(userEmail).pipe(
+      switchMap((followedUserEmails) => {
+        if (followedUserEmails.length > 0) {
+          return this.firestore
+            .collection('posts', (ref) => ref.where('userEmail', 'in', followedUserEmails).where('category', '==', category).orderBy('createDate', 'desc'))
+            .valueChanges({ idField: 'id' });
+        } else {
+          return of([]);
+        }
+      })
+    );
+  }
+
+  getFilteredPostsSortedByLikes(category: string): Observable<any[]> {
+    return this.firestore.collection<Post>('posts', ref => ref.where('category', '==', category).orderBy('likes', 'desc')).valueChanges({ idField: 'id' });
+  }
 }

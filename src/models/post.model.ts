@@ -9,4 +9,5 @@ export interface Post {
     createDate?: Date;
     numComments?: Number;
     editing?: boolean;
+    category?: boolean;
 }
