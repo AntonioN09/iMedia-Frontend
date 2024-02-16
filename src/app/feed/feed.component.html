@@ -40,8 +40,8 @@
                             </p>
                             <p class="text-sm text-gray-500">
                                 <!-- <a href="#" class="hover:underline">{{ post.formattedDate }} </a> -->
-                                <a href="#" class="hover:underline">{{ post.createDate.toDate().toLocaleDateString() }}
-                                    {{post.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                                <a href="#" class="hover:underline">{{ post?.createDate?.toDate().toLocaleDateString() }}
+                                    {{post?.createDate?.toDate().toLocaleTimeString([], {hour: '2-digit',
                                     minute:'2-digit'})}}
                                 </a>
                             </p>
@@ -74,7 +74,7 @@
 
                                 <span class="text-gray-700 text-sm ml-1">{{ post.likes }}</span>
                             </button>
-                            <button (click)="redirectToComments(post.id)" class="flex items-center ml-2">
+                            <button (click)="redirectToComments(post.id)" id="comment-button" class="flex items-center ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="w-6 h-6">
                                     <path fill-rule="evenodd"
