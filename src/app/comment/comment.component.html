@@ -1,3 +1,39 @@
+<div class="bg-white px-4 py-5 sm:px-6 w-full md:w-1/2 mx-auto my-8 shadow-lg rounded-lg">
+    <div class="-mt-6 -mb-6">
+        <div class="flex space-x-3">
+            <div class="flex-shrink-0">
+                <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + (post | async)?.userAvatar ? (post | async)?.userAvatar : 'default.png'" alt="">
+            </div>
+            <div class="min-w-0 flex-1">
+                <p class="text-sm font-semibold text-gray-900">
+                    <a href="#" class="hover:underline">{{ (post | async)?.userEmail }}</a>
+                </p>
+                <p class="text-sm text-gray-500">
+                    <a href="#" class="hover:underline">{{ (post | async)?.createDate.toDate().toLocaleDateString() }}
+                        {{(post | async)?.createDate.toDate().toLocaleTimeString([], {hour: '2-digit',
+                        minute:'2-digit'})}}
+                    </a>
+                </p>
+                <!-- Actual paragraph content -->
+                <!-- <p class="mt-2 text-gray-800">
+                    {{ post.body }}
+                </p> -->
+                <!-- End actual paragraph content -->
+            </div>
+        </div>
+        <div>
+            <p class="mt-4 text-gray-800 font-sans font-normal">
+                {{ (post | async)?.body }}
+            </p>
+        </div>
+        <!-- Interaction bar for likes and comments -->
+        <div class="flex justify-between items-center mt-4">
+            <div class="flex items-center">
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container mx-auto flex flex-col justify-center min-h-screen py-12 sm:px-6 lg:px-8 -mt-16">
     <div class="max-w-md w-full space-y-8 mx-auto">
       <div class="bg-white shadow rounded-lg p-8">
@@ -61,7 +97,7 @@
                 <div class="-mt-6 -mb-6">
                     <div class="flex space-x-3">
                         <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" [src]="comment.userAvatar ? comment.userAvatar : '../../assets/img/default.png'" alt="">
+                            <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + (comment.userAvatar ? comment.userAvatar : 'default.png')" alt="">
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-sm font-semibold text-gray-900">

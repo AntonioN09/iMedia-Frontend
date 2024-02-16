@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { Post } from '../../models/post.model';
-import { switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { Like } from 'src/models/like.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,19 @@ import { switchMap } from 'rxjs/operators';
 export class PostService {
   
   constructor(private firestore: AngularFirestore, private userService: UserService) {}
+
+  getPostById(postId: string | null): Observable<Post | null> {
+    return this.firestore
+      .collection<Post>('posts').doc(postId!).valueChanges().pipe(
+        map((post) => {
+          if (post) {
+            return post;
+          } else {
+            return null;
+          }
+        })
+      );
+  }
 
   getPosts(): Observable<Post[]> {
     return this.firestore
@@ -65,23 +79,66 @@ export class PostService {
   }
 
   addPost(post: Post): Promise<void> {
-    return this.firestore.collection('posts').add(post).then(() => {});
+    return this.firestore.collection('posts').add(post).then();
   }
 
-  likePost(postId: string | undefined): Observable<void> {
-    return this.firestore.collection('posts').doc(postId).get().pipe(
-      switchMap((doc) => {
-        if (doc.exists) {
-          const currentLikes = (doc.data() as Post)?.likes || 0;
-          const updatedLikes = currentLikes + 1;
+  likePost(userId: string | undefined, postId: string | undefined): Observable<void> {
+    const likeRef = this.firestore.collection('likes', ref =>
+        ref.where('userId', '==', userId)
+           .where('postId', '==', postId)
+           .limit(1)
+    );
+    return likeRef.get().pipe(
+        switchMap((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                return of();
+            } else {
+                const like: Like = {
+                    userId: userId,
+                    postId: postId
+                };
+                const addLike = from(this.firestore.collection('likes').add(like));
+                return addLike.pipe(
+                    switchMap(() => {
+                        return this.firestore.collection('posts').doc(postId).get();
+                    }),
+                    switchMap((doc) => {
+                        if (doc.exists) {
+                            const currentLikes = (doc.data() as Post)?.likes || 0;
+                            const updatedLikes = currentLikes + 1;
+                            return from(this.firestore.collection('posts').doc(postId).update({
+                                likes: updatedLikes,
+                            }));
+                        } else {
+                            return Promise.reject('Document not found');
+                        }
+                    })
+                );
+            }
+        }),
+        catchError(error => {
+            console.error('Error liking post:', error);
+            return of(); 
+        }),
+        map(() => {})
+    );
+  }
 
-          return this.firestore.collection('posts').doc(postId).update({
-            likes: updatedLikes,
-          });
+  getFilteredPostsByUserEmail(userEmail:string, category: string): Observable<any[]> {
+    return this.userService.getFollowedUserEmails(userEmail).pipe(
+      switchMap((followedUserEmails) => {
+        if (followedUserEmails.length > 0) {
+          return this.firestore
+            .collection('posts', (ref) => ref.where('userEmail', 'in', followedUserEmails).where('category', '==', category).orderBy('createDate', 'desc'))
+            .valueChanges({ idField: 'id' });
         } else {
-          return Promise.reject('Document not found');
+          return of([]);
         }
       })
     );
+  }
+
+  getFilteredPostsSortedByLikes(category: string): Observable<any[]> {
+    return this.firestore.collection<Post>('posts', ref => ref.where('category', '==', category).orderBy('likes', 'desc')).valueChanges({ idField: 'id' });
   }
 }

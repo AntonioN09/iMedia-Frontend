@@ -19,6 +19,7 @@ export class RankComponent implements OnInit {
   postForm!: FormGroup;
   userId!: string | null;
   userData!: User | null;
+  filterForm!: FormGroup;
 
   constructor(private fb: FormBuilder,
               private userService: UserService, 
@@ -27,6 +28,10 @@ export class RankComponent implements OnInit {
               private router: Router) {
     this.postForm = this.fb.group({
       body: ['', Validators.required],
+    });
+
+    this.filterForm = this.fb.group({
+      category: ['', Validators.required]
     });
   }
 
@@ -74,7 +79,7 @@ export class RankComponent implements OnInit {
   }
   
   toggleLike(postId: string | undefined): void {
-    this.postService.likePost(postId).subscribe();
+    this.postService.likePost(this.userId!, postId).subscribe();
   }
 
   redirectToComments(postId: string | undefined): void {
@@ -95,4 +100,14 @@ export class RankComponent implements OnInit {
       });
   }
   
+  filterByCategory(): void {
+    if(this.filterForm.valid) {
+      const category = this.filterForm.value.category;
+      if(category == 'No filter'){
+        this.posts = this.postService.getPostsSortedByLikes();
+      } else{
+        this.posts = this.postService.getFilteredPostsSortedByLikes(category);
+      }
+    }
+  }
 }

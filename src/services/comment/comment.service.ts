@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, from, map, switchMap } from 'rxjs';
+import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Comment } from '../../models/comment.model';
+import { Like } from 'src/models/like.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,20 +47,45 @@ export class CommentService {
     );
   }
 
-  likeComment(commentId: string | undefined): Observable<void> {
-    return this.firestore.collection('comments').doc(commentId).get().pipe(
-      switchMap((doc) => {
-        if (doc.exists) {
-          const currentLikes = (doc.data() as Comment)?.likes || 0;
-          const updatedLikes = currentLikes + 1;
-
-          return this.firestore.collection('comments').doc(commentId).update({
-            likes: updatedLikes,
-          });
-        } else {
-          return Promise.reject('Document not found');
-        }
-      })
+  likeComment(userId: string | undefined, commentId: string | undefined): Observable<void> {
+    const likeRef = this.firestore.collection('likes', ref =>
+        ref.where('userId', '==', userId)
+           .where('postId', '==', commentId)
+           .limit(1)
+    );
+    return likeRef.get().pipe(
+        switchMap((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                return of();
+            } else {
+                const like: Like = {
+                    userId: userId,
+                    postId: commentId
+                };
+                const addLike = from(this.firestore.collection('likes').add(like));
+                return addLike.pipe(
+                    switchMap(() => {
+                        return this.firestore.collection('comments').doc(commentId).get();
+                    }),
+                    switchMap((doc) => {
+                        if (doc.exists) {
+                            const currentLikes = (doc.data() as Comment)?.likes || 0;
+                            const updatedLikes = currentLikes + 1;
+                            return from(this.firestore.collection('comments').doc(commentId).update({
+                                likes: updatedLikes,
+                            }));
+                        } else {
+                            return Promise.reject('Document not found');
+                        }
+                    })
+                );
+            }
+        }),
+        catchError(error => {
+            console.error('Error liking post:', error);
+            return of(); 
+        }),
+        map(() => {})
     );
   }
 

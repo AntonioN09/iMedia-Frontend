@@ -7,6 +7,8 @@ import { UserService } from 'src/services/user/user.service';
 import { Comment } from '../../models/comment.model';
 import { User } from 'src/models/user.model';
 import { Observable } from 'rxjs';
+import { Post } from 'src/models/post.model';
+import { PostService } from 'src/services/post/post.service';
 
 @Component({
   selector: 'app-comment',
@@ -21,14 +23,17 @@ export class CommentComponent {
   userData!: User | null;
   comments!: Observable<any[]>;
   displayCount: number = 3;
+  post!: Observable<any>;
 
   constructor(private route: ActivatedRoute, 
               private fb: FormBuilder, 
               private authService: AuthService, 
+              private postService: PostService,
               private commentService: CommentService, 
               private userService: UserService) {
     this.route.params.subscribe(params => {
       this.postId = params['postId'];
+      this.post = this.postService.getPostById(params['postId']);
     });
 
     this.commentForm = this.fb.group({
@@ -80,7 +85,7 @@ export class CommentComponent {
   }
 
   toggleLike(commentId: string | undefined): void {
-    this.commentService.likeComment(commentId).subscribe();
+    this.commentService.likeComment(this.currentUserId!, commentId).subscribe();
   }
 
   showMore(): void {

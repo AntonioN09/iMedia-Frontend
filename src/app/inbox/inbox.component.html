@@ -30,7 +30,7 @@
             <div class="-mt-6 -mb-6">
                 <div class="flex space-x-3">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" [src]="currentUserEmail == chat.userEmail1 ? chat.userAvatar1 : chat.userAvatar2" alt="">
+                        <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + currentUserEmail == chat.userEmail1 ?  chat.userAvatar1 : chat.userAvatar2" alt="">
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900">
@@ -52,7 +52,7 @@
                 </div>
                 <div >
                     <p class="mt-4 text-gray-800 font-sans font-normal">
-                        Number of unseen messages: {{ currentUserEmail == chat.userEmail1 ? chat.unseenMessages1 : chat.unseenMessages2 }}
+                        Unread messages in this chat: {{ currentUserEmail == chat.userEmail1 ? chat.unseenMessages1 : chat.unseenMessages2 }}
                     </p>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                     <div class="-mt-6 -mb-6">
                         <div class="flex space-x-3">
                             <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" [src]="message.userAvatar ? message.userAvatar : '../../assets/img/default.png'" alt="">
+                                <img class="h-10 w-10 rounded-full" [src]="'assets/img/' + (message.userAvatar ? message.userAvatar : 'default.png')" alt="">
                             </div>
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-semibold text-gray-900">
