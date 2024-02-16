@@ -130,6 +130,28 @@ export class UserService {
     );
   }
 
+  updateCv(cv: CV): Observable<void> {
+    return this.firestore.collection('cvs').doc(cv.id).get().pipe(
+      switchMap((doc) => {
+        if (doc.exists) {
+          let cv1 = {
+            name: cv.name,
+            contact: cv.contact,
+            summary: cv.summary,
+            experience: cv.experience,
+            education: cv.education,
+            skills: cv.skills,
+            languages: cv.languages
+          }
+          let cv2 = Object.fromEntries(Object.entries(cv1).filter(([key, value]) => value !== null && value !== undefined && value !== ""));
+          return this.firestore.collection('cvs').doc(cv.id).update(cv2);
+        } else {
+          return Promise.reject('Document not found');
+        }
+      })
+    );
+  }
+
   notifyUser(user: User | null, message: string, receiverEmail: string): Promise<void> {
     this.incrementUnseenNotifications(user).subscribe();
     
@@ -263,26 +285,5 @@ export class UserService {
           }
         })
       );
-  }
-
-  updateCv(cv: CV): Observable<void> {
-    console.log(cv.id);
-    return this.firestore.collection('cvs').doc(cv.id).get().pipe(
-      switchMap((doc) => {
-        if (doc.exists) {
-          console.log(cv);
-          return this.firestore.collection('cvs').doc(cv.id).update({
-            contact: cv.contact,
-            summary: cv.summary,
-            experience: cv.experience,
-            education: cv.education,
-            skills: cv.skills,
-            languages: cv.languages
-          });
-        } else {
-          return Promise.reject('Document not found');
-        }
-      })
-    );
   }
 }

@@ -40,6 +40,7 @@ export class ModifyCvComponent implements OnInit {
 
   ngOnInit() {
     this.cvForm = this.fb.group({
+      name: [this.cvData?.name],
       contact: [this.cvData?.contact],
       summary: [this.cvData?.summary],
       experience: [this.cvData?.experience],
@@ -57,6 +58,7 @@ export class ModifyCvComponent implements OnInit {
         const newCv: CV = {
           id: userId,
           userId: userId,
+          name: this.cvForm.value.name,
           contact: this.cvForm.value.contact,
           summary: this.cvForm.value.summary,
           experience: this.cvForm.value.experience,

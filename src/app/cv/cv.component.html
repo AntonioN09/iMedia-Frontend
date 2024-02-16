@@ -1,51 +1,3 @@
-<!-- <div *ngIf="userEmail">
-    Welcome, {{ username }}!
-</div> -->
-
-
-<!-- <div class="bg-white p-6 max-w-4xl mx-auto shadow-lg rounded-lg mb-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="md:col-span-1 flex flex-col items-center p-4">
-            <div class="w-24 h-24 bg-gray-300 rounded-full shadow-inner mb-4"></div>
-            <div class="text-center">
-                <div class="font-bold">{{ username }}</div>
-                <div>{{ userEmail }}</div>
-            </div>
-        </div>
-
-
-        <div class="md:col-span-2 space-y-4 p-4">
-            <div class="shadow p-4 rounded-lg bg-gray-50">
-
-            </div>
-            <div class="shadow p-4 rounded-lg bg-gray-50">
-
-            </div>
-            <div class="flex gap-4">
-                <div class="shadow p-4 rounded-lg bg-gray-50 flex-1">
-
-                </div>
-                <div class="shadow p-4 rounded-lg bg-gray-50 flex-1">
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<!-- Posts -->
-<!-- <div class="max-w-4xl mx-auto">
-    <h5 class="font-bold text-lg mb-4">Your posts:</h5>
-    <div class="space-y-4">
-        <div *ngFor="let post of posts" class="bg-white shadow-lg rounded-lg p-4">
-            <p class="font-semibold">Author: {{ post.userEmail }}</p>
-            <p class="text-gray-800">Title: {{ post.title }}</p>
-            <p class="text-gray-600">Body: {{ post.body }}</p>
-            <p class="text-gray-500">Likes: {{ post.likes }}</p>
-        </div>
-    </div>
-</div> -->
-
 <div class="bg-white">
     <div aria-hidden="true" class="relative">
         <img src="https://wallpapers.com/images/featured/business-jzw8ax93flqonkce.jpg" alt=""
@@ -55,7 +7,7 @@
     </div>
 
     <div class="relative mx-auto -mt-12 max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
-        <div class="mx-auto max-w-2xl text-center lg:max-w-4xl">
+        <div class="mx-auto max-w-2xl text-center lg:max-w-4xl mb-8">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">CV</h2>
             <br/>
             <button (click)="exportPdf()"
@@ -64,31 +16,40 @@
             </button>
         </div>
 
-        <dl  #cvContainer id="cv-container" class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:max-w-none lg:grid-cols-3 lg:gap-x-8">
-            <div class="border-t border-gray-200 pt-4">
-                <dt class="font-medium text-gray-900">Contact</dt>
-                <dd class="mt-2 text-sm text-gray-500">{{ cvData?.contact }}</dd>
+        <div  #cvContainer id="cv-container">
+            <div class="container mx-auto px-4 py-8 md:w-3/4">
+                <div class="text-center mb-16">
+                    <h1 class="text-3xl font-bold text-gray-800">{{ cvData?.name ? cvData?.name : 'Your Name' }}</h1>
+                    <p class="text-lg text-gray-600">{{ userData?.occupation ? userData?.occupation : 'Job Title' }}</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-md border-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">Personal Information</h2>
+                        <p class="text-gray-700"><span class="font-bold">Bio:</span> {{ userData?.bio }}</p>
+                        <p class="text-gray-700"><span class="font-bold">Email:</span> {{ userData?.email }}</p>
+                        <p class="text-gray-700"><span class="font-bold">Contact:</span> (123) {{ cvData?.contact }}</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-md border-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">Professional Summary</h2>
+                        <p class="text-gray-700">{{ cvData?.summary }}</p>
+                    </div>
+                    <div class="col-span-2 bg-white p-4 rounded-md border-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">Experience</h2>
+                        <p class="text-gray-700">{{ cvData?.experience }}</p>
+                    </div>
+                    <div class="col-span-2 bg-white p-4 rounded-md border-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">Education</h2>
+                        <p class="text-gray-700">{{ cvData?.education }}</p>
+                    </div>
+                    <div class="col-span-2 bg-white p-4 rounded-md border-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">Skills</h2>
+                        <p class="text-gray-700">{{ cvData?.skills }}</p>
+                    </div>
+                    <div class="col-span-2 bg-white p-4 rounded-md border-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4">Languages</h2>
+                        <p class="text-gray-700">{{ cvData?.languages }}</p>
+                    </div>
+                </div>
             </div>
-            <div class="border-t border-gray-200 pt-4">
-                <dt class="font-medium text-gray-900">Summary</dt>
-                <dd class="mt-2 text-sm text-gray-500">{{ cvData?.summary }}</dd>
-            </div>
-            <div class="border-t border-gray-200 pt-4">
-                <dt class="font-medium text-gray-900">Experince</dt>
-                <dd class="mt-2 text-sm text-gray-500">{{ cvData?.experience }}</dd>
-            </div>
-            <div class="border-t border-gray-200 pt-4">
-                <dt class="font-medium text-gray-900">Education</dt>
-                <dd class="mt-2 text-sm text-gray-500">{{ cvData?.education }}</dd>
-            </div>
-            <div class="border-t border-gray-200 pt-4">
-                <dt class="font-medium text-gray-900">Skills</dt>
-                <dd class="mt-2 text-sm text-gray-500">{{ cvData?.skills }}</dd>
-            </div>
-            <div class="border-t border-gray-200 pt-4">
-                <dt class="font-medium text-gray-900">Languages</dt>
-                <dd class="mt-2 text-sm text-gray-500">{{ cvData?.languages }}</dd>
-            </div>
-        </dl>
     </div>
 </div>
