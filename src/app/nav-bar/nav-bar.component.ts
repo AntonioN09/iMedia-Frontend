@@ -18,6 +18,7 @@ export class NavBarComponent {
   isMenuOpen = false;
   currentUserId!: string | null;
   userData!: User | null;
+  isMenuOpenMobile = false;
 
   constructor(private authService: AuthService, 
               private postService: PostService, 
@@ -49,6 +50,10 @@ export class NavBarComponent {
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleMenuMobile(): void {
+    this.isMenuOpenMobile = !this.isMenuOpenMobile;
   }
 
   register() {

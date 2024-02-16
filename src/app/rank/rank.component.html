@@ -1,4 +1,15 @@
-<form [formGroup]="filterForm" (ngSubmit)="filterByCategory()" class="mt-8 space-y-6">
+<div class="px-6 py-12 sm:py-32 lg:px-8 -mt-16">
+    <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Ranking page</h2>
+        <p class="mt-6 text-lg leading-8 text-gray-600">Step into the spotlight where the best of our community's
+            content shines! Here,
+            you'll find all user posts meticulously organized in descending order of popularity, based on likes
+            received. It's more than just a leaderboard; it's a showcase of what's resonating with the community right
+            now.</p>
+    </div>
+</div>
+
+<form [formGroup]="filterForm" (ngSubmit)="filterByCategory()" class="mt-8 space-y-6  mx-auto px-4 py-8 md:w-1/2 mb-24">
     <div class="col-span-full">
       <div class="mt-2 flex items-center gap-x-3">
         <!-- <svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -26,18 +37,6 @@
       </button>
     </div>
 </form>
-
-<div class="px-6 py-24 sm:py-32 lg:px-8 -mt-16">
-    <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Ranking page</h2>
-        <p class="mt-6 text-lg leading-8 text-gray-600">Step into the spotlight where the best of our community's
-            content shines! Here,
-            you'll find all user posts meticulously organized in descending order of popularity, based on likes
-            received. It's more than just a leaderboard; it's a showcase of what's resonating with the community right
-            now.</p>
-    </div>
-</div>
-
 
 <div class="container mx-auto -mt-20">
 
