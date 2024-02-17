@@ -18,10 +18,10 @@ export class ModifyCvComponent implements OnInit {
   currentUserEmail!: string | null;
   cvData!: CV | null;
 
-  constructor(private fb: FormBuilder, 
-    private authService: AuthService, 
-    private postService: PostService, 
-    private userService: UserService) {
+  constructor(public fb: FormBuilder, 
+    public authService: AuthService, 
+    public postService: PostService, 
+    public userService: UserService) {
       this.authService.getCurrentUserEmail().subscribe((userEmail) => {
         this.currentUserEmail = userEmail;
       });

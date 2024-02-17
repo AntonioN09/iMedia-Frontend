@@ -20,7 +20,7 @@ export class InboxComponent implements OnInit {
   userData!: User | null;
   receiverEmail!: string;
   receiverEmailSubject: Subject<string> = new Subject<string>();
-  currentChat!: Chat;
+  currentChat!: any;
   currentLastSeen!: Date | undefined;
   messages!: Observable<any[]>;
   barrierDisplayed!: boolean;

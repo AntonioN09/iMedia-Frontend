@@ -25,7 +25,7 @@ export class MessageService {
       .collection<Message>('messages', ref =>
         ref.where('senderEmail', 'in', emails)
            .where('receiverEmail', 'in', emails)
-           .orderBy('createDate', 'desc')
+           .orderBy('createDate')
       )
       .valueChanges({ idField: 'id' });
   }

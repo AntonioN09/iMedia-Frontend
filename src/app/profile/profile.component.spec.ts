@@ -3,7 +3,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ModifyProfileComponent } from '../modify-profile/modify-profile.component';
 import { ProfileComponent } from './profile.component';
 import { UserService } from 'src/services/user/user.service';
-import { User } from 'src/models/user.model';
 import { AuthService } from 'src/services/auth/auth.service';
 import { PostService } from 'src/services/post/post.service';
 import { MockAuthService } from 'src/mock-services/mock-auth.service';
@@ -76,5 +75,4 @@ describe('Integration Test: ModifyProfileComponent and ProfileComponent', () => 
       expect(profileComponent.userService.getUserById).toHaveBeenCalled();
       expect(profileComponent.userData).toEqual(modifyProfileComponent.userData);
     });
-  });
-  
+});

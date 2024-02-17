@@ -18,7 +18,7 @@ export class CvComponent implements OnInit {
   cvData: CV | null = null;
   userData: User | null = null;
   
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(public authService: AuthService, public userService: UserService) {}
 
   ngOnInit(): void {
     this.authService.getCurrentUserEmail().subscribe((email) => {

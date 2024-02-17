@@ -42,7 +42,6 @@ export class PostComponent implements OnInit {
     });
   }
 
-  
   onSubmit(): void {
     if (this.postForm.valid) {
       const userId = this.currentUserId;
