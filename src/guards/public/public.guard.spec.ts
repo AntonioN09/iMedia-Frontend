@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
-
 import { publicGuard } from './public.guard';
 
 describe('publicGuard', () => {
