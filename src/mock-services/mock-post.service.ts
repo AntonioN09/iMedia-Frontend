@@ -4,9 +4,9 @@ import { Timestamp } from '@firebase/firestore';
 
 export class MockPostService {
   posts: Post[] = [
-    { id: '1', body: 'Test post',
-      userId: '123', likes: 3 }
+    { id: '1', body: 'Test post', userId: '123', likes: 3 }
   ];
+  
   getPosts() {
     return of([{ id: '1', content: 'Test post' }]);
   }

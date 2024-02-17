@@ -3,28 +3,23 @@ import { User } from 'src/models/user.model';
 import { Follow } from 'src/models/follow.model';
 import { Notification } from 'src/models/notification.model';
 import { CV } from 'src/models/cv.model';
-import { Timestamp } from '@firebase/firestore';
+
 export class MockUserService {
-  // Simulated users data
   private mockUsers: User[] = [
-    { id: '1', email: 'test@example.com',},
-    { id: '2', email: 'user2@example.com', /* other properties */ },
-    // ... more users
+    { id: '1', email: 'user1@example.com' },
+    { id: '2', email: 'user2@example.com' }
   ];
 
-  // Simulated follows data
   private mockFollows: Follow[] = [
     { user: 'user1@example.com', following: 'user2@example.com' },
-    // ... more follows
   ];
 
-  // Simulated notifications data
-  private mockNotifications: Notification[] = [];
+  private mockNotifications: Notification[] = [
+    {id: '1', userId: '1', createDate: new Date()}
+  ];
 
-  // Simulated CVs data
   private mockCVs: CV[] = [
-    { userId: '1', /* other properties */ },
-    // ... more CVs
+    { userId: '1' }
   ];
 
   getUsersSortedByEmail() {
@@ -32,9 +27,6 @@ export class MockUserService {
   }
 
   followUser(userEmail: string | null, emailToFollow: string) {
-    // Add mock follow logic
-    // ...
-
     return Promise.resolve();
   }
 
@@ -50,57 +42,40 @@ export class MockUserService {
     return of(user || null);
   }
 
+  getUserByEmail(userEmail: string | null) {
+    const user = this.mockUsers.find(user => user.email === userEmail);
+    return of(user || null);
+  }
+
   getUserByIdSync(userId: string | null) {
-    // Sync methods in mock might just return data directly
     return this.mockUsers.find(user => user.id === userId) || null;
   }
 
   updateUser(user: User) {
-    // Update mock user logic
-    // ...
-
     return of(undefined);
   }
 
   notifyUser(user: User | null, message: string, receiverEmail: string) {
-    // Add to mock notifications
-    // ...
-
     return Promise.resolve();
   }
 
   removeUser(userId: string) {
-    // Remove mock user logic
-    // ...
-
     return of(undefined);
   }
 
   isAdmin() {
-    // Simulate admin check logic
-    // ...
-
     return of(false);
   }
 
   isMod() {
-    // Simulate mod check logic
-    // ...
-
     return of(false);
   }
 
   setAdmin(user: User) {
-    // Update mock admin status
-    // ...
-
     return of(undefined);
   }
 
   setMod(user: User) {
-    // Update mock mod status
-    // ...
-
     return of(undefined);
   }
 
@@ -110,9 +85,6 @@ export class MockUserService {
   }
 
   updateCv(cv: CV) {
-    // Update mock CV logic
-    // ...
-
     return of(undefined);
   }
 }
