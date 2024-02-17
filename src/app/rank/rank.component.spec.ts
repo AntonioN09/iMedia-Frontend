@@ -5,7 +5,6 @@ import { RankComponent } from './rank.component';
 import { PostService } from '../../services/post/post.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from 'src/services/user/user.service';
-import { of } from 'rxjs';
 import { MockPostService } from 'src/mock-services/mock-post.service';
 import { MockAuthService } from 'src/mock-services/mock-auth.service';
 import { MockUserService } from 'src/mock-services/mock-user.service';
