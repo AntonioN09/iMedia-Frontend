@@ -91,7 +91,35 @@ export class PostService {
     return likeRef.get().pipe(
         switchMap((querySnapshot) => {
             if (!querySnapshot.empty) {
-                return of();
+              const like: Like = {
+                userId: userId,
+                postId: postId
+            };
+            const addLike = from(this.firestore.collection('likes').add(like));
+            return addLike.pipe(
+                switchMap(() => {
+                    return this.firestore.collection('posts').doc(postId).get();
+                }),
+                switchMap((doc) => {
+                    if (doc.exists) {
+                        const currentLikes = (doc.data() as Post)?.likes || 0;
+                        const updatedLikes = currentLikes - 1;
+                        return from(this.firestore.collection('posts').doc(postId).update({
+                            likes: updatedLikes,
+                        }));
+                    } else {
+                        return Promise.reject('Document not found');
+                    }
+                }),
+                switchMap((doc) => { // I need here the like id so i can you the like from database
+                  return from(this.firestore.doc(`likes/${userId}`).delete()).pipe(
+                    catchError(error => {
+                      console.error('Error deleting like:', error);
+                      throw error;
+                    })
+                  );
+                })
+            );
             } else {
                 const like: Like = {
                     userId: userId,

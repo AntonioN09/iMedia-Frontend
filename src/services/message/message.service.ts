@@ -73,16 +73,30 @@ export class MessageService {
   }
 
   createChat(chat: Chat): Promise<void> {
-    return this.firestore.collection('chats').add(chat).then();
+    return new Promise<void>((resolve, reject) => {
+        this.getChatByUserEmails(chat.userEmail1!, chat.userEmail2!).subscribe((existingChat) => {
+            if (!existingChat) {
+                this.firestore.collection('chats').add(chat).then(() => {
+                    resolve();
+                }).catch((error) => {
+                    reject(error);
+                });
+            } else {
+                resolve();
+            }
+        }, (error) => {
+            reject(error);
+        });
+    });
   }
 
-  getChatByUserEmails(userEmail1: string | null, userEmail2: string | null): Observable<Chat | undefined> {
+  getChatByUserEmails(userEmail1: string | null, userEmail2: string | null): Observable<boolean | undefined> {
     return this.firestore.collection<Chat>('chats', ref => {
       return ref.where('userEmail1', 'in', [userEmail1, userEmail2])
                 .where('userEmail2', 'in', [userEmail1, userEmail2])
                 .limit(1);
     }).valueChanges({ idField: 'id' }).pipe(
-      map(chats => chats.length > 0 ? chats[0] : undefined)
+      map(chats => chats.length > 0)
     );
   }
 
