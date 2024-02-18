@@ -65,8 +65,8 @@ export class NavBarComponent {
   }
 
   logout(): void {
-    this.router.navigate(['/public/login']);
     this.authService.logout();
+    this.router.navigate(['/']);
     window.location.reload();
   }
 
