@@ -54,6 +54,7 @@ export class MessageComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('ici');
     if (this.messageForm.valid) {
       const userId = this.currentUserId;
       const userEmail = this.currentUserEmail;

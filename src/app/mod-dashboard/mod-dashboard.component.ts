@@ -66,7 +66,7 @@ export class ModDashboardComponent implements OnInit {
         }
         this.postService.editPost(newPost).subscribe();
         const message: string = "The post '" + post.body + "' has been moderated";
-        this.userService.notifyUser(this.userData, message, post.userEmail);
+        this.userService.notifyUser(this.userData, message, post.userEmail, post.userId);
     }
 
     this.toggleEdit(post);

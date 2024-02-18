@@ -152,14 +152,14 @@ export class UserService {
     );
   }
 
-  notifyUser(user: User | null, message: string, receiverEmail: string): Promise<void> {
-    this.incrementUnseenNotifications(user).subscribe();
+  notifyUser(sender: User | null, message: string, receiverEmail: string, receiverId: string): Promise<void> {
+    this.incrementUnseenNotifications(receiverId).subscribe();
     
     const notification: Notification = {
       body: message,
-      userId: user?.id,
-      userAvatar: user?.avatar,
-      senderEmail: user?.email,
+      userId: sender?.id,
+      userAvatar: sender?.avatar,
+      senderEmail: sender?.email,
       receiverEmail: receiverEmail,
       createDate: new Date()
     }
@@ -167,13 +167,13 @@ export class UserService {
     return this.firestore.collection('notifications').add(notification).then();
   }
 
-  incrementUnseenNotifications(user: User | null): Observable<any> {
-    return this.firestore.collection('users').doc(user?.id).get().pipe(
+  incrementUnseenNotifications(userId: string): Observable<any> {
+    return this.firestore.collection('users').doc(userId).get().pipe(
       switchMap((doc) => {
         if (doc.exists) {
           const current = (doc.data() as User)?.unseenNotifications || 0;
           const updated = current + 1;
-          return this.firestore.collection('users').doc(user?.id).update({
+          return this.firestore.collection('users').doc(userId).update({
             unseenNotifications: updated,
           });
         } else {
