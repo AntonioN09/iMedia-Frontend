@@ -66,8 +66,11 @@ export class NavBarComponent {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/']);
-    window.location.reload();
+    this.authService.isAuthenticated().subscribe((isAuthenticated) => {
+      if(!isAuthenticated){
+        this.router.navigate(['/public/login']);
+      }
+    });
   }
 
   profile() {
