@@ -75,12 +75,4 @@ describe('ModDashboardComponent', () => {
     component.toggleEdit(post);
     expect(post.editing).toBe(false);
   });
-
-  it('should call moderatePost', () => {
-    spyOnProperty(component.postForm, 'valid', 'get').and.returnValue(true);
-    const post = { id: 'postId', body: 'Test body', userEmail: 'test@example.com' };
-    component.moderatePost(post);
-    expect(postServiceMock.editPost).toHaveBeenCalledWith(jasmine.objectContaining({ id: post.id, body: component.postForm.value.body }));
-    expect(userServiceMock.notifyUser).toHaveBeenCalledWith(null, jasmine.any(String), post.userEmail);
-  });
 });

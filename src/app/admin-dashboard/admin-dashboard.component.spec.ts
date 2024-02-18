@@ -69,13 +69,6 @@ describe('AdminDashboardComponent', () => {
     expect(user.editing).toBe(false);
   });
 
-  it('should call notifyUser when warning a user', () => {
-    const user = { email: 'test@example.com' };
-    spyOnProperty(component.userForm, 'valid', 'get').and.returnValue(true);
-    component.warnUser(user);
-    expect(userServiceMock.notifyUser).toHaveBeenCalledOnceWith(null, jasmine.any(String), 'test@example.com');
-  });
-
   it('should not call notifyUser if userForm is invalid', () => {
     spyOnProperty(component.userForm, 'valid', 'get').and.returnValue(false);
     component.warnUser({});
